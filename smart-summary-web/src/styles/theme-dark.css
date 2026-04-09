@@ -1,0 +1,8 @@
+﻿.theme-dark {
+  --app-page-bg: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+  --app-panel-bg: #111827;
+  --app-panel-bg-soft: #0f172a;
+  --app-panel-border: rgba(148, 163, 184, 0.18);
+  --app-panel-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+  --app-navbar-bg: rgba(15, 23, 42, 0.96);
+}

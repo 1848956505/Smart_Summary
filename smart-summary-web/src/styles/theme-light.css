@@ -1,0 +1,9 @@
+﻿:root,
+.theme-light {
+  --app-page-bg: linear-gradient(180deg, #f6f8fc 0%, #eef2f8 100%);
+  --app-panel-bg: var(--app-color-bg-elevated);
+  --app-panel-bg-soft: var(--app-color-bg-soft);
+  --app-panel-border: var(--app-color-border);
+  --app-panel-shadow: var(--app-shadow-md);
+  --app-navbar-bg: rgba(255, 255, 255, 0.96);
+}

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.smartsummary.controller.MemoControllerRegressionTest
+-------------------------------------------------------------------------------
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.302 s -- in com.smartsummary.controller.MemoControllerRegressionTest
