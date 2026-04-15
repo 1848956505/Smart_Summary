@@ -5,12 +5,20 @@
 
 
 # --- 1. 基础API配置 ---
-API_KEY = "DEHf498z7Y8UC7GJxNEsD2z2GqlA36SXI23ZeQGYv8pDonIj"
-BASE_URL = "https://www.autodl.art/api/v1"
-MODEL_NAME = "qwen3.6-plus"
+# API_KEY = "DEHf498z7Y8UC7GJxNEsD2z2GqlA36SXI23ZeQGYv8pDonIj"
+# BASE_URL = "https://www.autodl.art/api/v1"
+# MODEL_NAME = "qwen3.6-plus"
+
+# API_KEY = "sk-d1e954b191cf4830bf8dbaac5fec2f97"
+# BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+# MODEL_NAME = "qwen3.6-plus"
+
+API_KEY = "sk-ddc2ab95236748acbe17d39a2eb4ca10"
+BASE_URL = "https://api.deepseek.com"
+MODEL_NAME = "deepseek-chat"
 
 # --- 2. 运行参数配置 ---
-SAMPLES_PER_STYLE = 2     # 每种风格生成的数量
+SAMPLES_PER_STYLE = 10     # 每种风格生成的数量
 MAX_RETRIES = 3
 SLEEP_TIME = 0.5
 
@@ -20,7 +28,7 @@ TOP_P = 0.9               # Top-p 采样核 (Nucleus Sampling)
 RANDOM_SEED = 42          # 随机种子，确保实验的可复现性
 SEEDS_PER_SAMPLE_MIN = 3  # 每个样本生成的最小随机种子数
 SEEDS_PER_SAMPLE_MAX = 5  # 每个样本生成的最大随机种子数
-NUM_WORKERS = 10           # 进程数/线程数，用于并行处理
+NUM_WORKERS = 1         # 进程数/线程数，用于并行处理
 
 # --- 4. 概率权重配置 ---
 ROUTINE_TASK_PROB = 0.7   # 常规任务 (Routine Task) 的概率权重 (70%)
@@ -180,6 +188,13 @@ FROM_PROMPT = """
 （二）备注规则
 1. 各模块下方可选择性添加备注，用于补充说明或建议。
 2. 格式：💡 *备注：{备注内容}*
+
+ （三）整体要求：
+ 1. 各模块内容必须基于用户输入的工作流水，真实反映工作内容、结果和风险，不得编造。
+ 2. 推断内容必须合理、有依据，且仅限于输入中完全未提及但上下文明显需要的部分。
+ 3. 周报内容应突出积极成果和价值导向，风险部分如实反映问题但不夸大，下一步计划应具体可行。
+ 4. 检查表格格式、指标数字真实性、推断标记使用是否正确，确保输出符合专业周报的标准。
+ 5. 使用Markdown格式，确保周报结构清晰、易读。
 -->
 
 <!-- 
@@ -207,19 +222,20 @@ FROM_PROMPT = """
 -->
 ## 📌 本周工作概览
 
-{总结概述，简洁明确}
+{总结概述，简洁明确,优先汇报积极的一面，不隐瞒问题，但不突出问题。}
 
 ------
 <!-- 
 三、本周工作明细（必显示，不可推断）
 1. 使用 Markdown 表格。
 2. 日期列：仅当输入中明确给出各工作项的星期日期时才显示该列；若任意一行有明确日期，则所有行均显示日期列（未知日期填“-”）。
-3. 工作内容：描述具体行动。
-4. 关键成果/指标：必填，包含结果及指标变化（如有）。若结果有明显积极业务影响，可直接写出（不加推断标记）；否则不写。
+3. 工作内容：描述具体行动。注意：必须和工作有关，其它杂事（例如开会、培训等）不应包含在内。
+4. 关键成果/指标：必填，包含结果及指标变化（如有）。只写积极的结果或者影响。消极的留在风险模块，不要在这里写
 5. 状态：根据真实工作内容填写，不可推断。状态说明示例：
    - ✅ 已上线/已修复/已完成/已闭环
    - 🔄 进行中/测试中/灰度中
    - ⭕ 阻塞/未根治/待跟进
+
 -->
 ## 📋 本周工作明细
 

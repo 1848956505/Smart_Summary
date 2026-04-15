@@ -1,4 +1,4 @@
-﻿import json
+import json
 import os
 import random
 import time
@@ -7,7 +7,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from openai import OpenAI
 from tqdm import tqdm
 
-import configv8_2 as config
+import configv8_0 as config
 
 
 random.seed(config.RANDOM_SEED)
@@ -16,11 +16,6 @@ random.seed(config.RANDOM_SEED)
 PROMPT_MAP = {
     'from': config.FROM_PROMPT,
     'list': config.LIST_PROMPT,
-}
-
-STYLE_LABEL_MAP = {
-    'from': '表格风格',
-    'list': '列表风格',
 }
 
 
@@ -39,35 +34,33 @@ with open(config.SEED_FILE, 'r', encoding='utf-8') as f:
 FLAT_ROLES = list(TASK_SEEDS_DB.keys())
 
 
-def build_prompt(prompt_template, role, scenario, task_seeds, routine_task, temporal_pattern, instruction):
-    return prompt_template.format_map(
-        SafeFormatDict(
-            role=role,
-            scenario=scenario,
-            task_seeds=task_seeds,
-            routine_task=routine_task,
-            temporal_pattern=temporal_pattern,
-            instruction=instruction,
-            name_mention_prob=config.NAME_MENTION_PROB,
-            typo_noise_prob=config.TYPO_NOISE_PROB,
-            emotion_noise_prob=config.EMOTION_NOISE_PROB,
-            incomplete_info_prob=config.INCOMPLETE_INFO_PROB,
-        )
-    )
+def build_prompt(prompt_template, style_name, role, scenario, task_seeds, routine_task, temporal_pattern, instruction):
+    return prompt_template.format_map(SafeFormatDict(
+        role=role,
+        scenario=scenario,
+        task_seeds=task_seeds,
+        routine_task=routine_task,
+        temporal_pattern=temporal_pattern,
+        instruction=instruction,
+        style_name=style_name,
+        length_requirement='',
+        name_mention_prob=config.NAME_MENTION_PROB,
+        typo_noise_prob=config.TYPO_NOISE_PROB,
+        emotion_noise_prob=config.EMOTION_NOISE_PROB,
+        incomplete_info_prob=config.INCOMPLETE_INFO_PROB,
+    ))
 
 
 def generate_single_sample(style_name, prompt_template, sample_idx):
     rng = random.Random(config.RANDOM_SEED + sample_idx)
     client = init_client()
-    style_label = STYLE_LABEL_MAP.get(style_name, style_name)
 
     for attempt in range(config.MAX_RETRIES):
         try:
             role = rng.choice(FLAT_ROLES)
             scenario = rng.choice(config.SCENARIO_POOL)
             temporal_pattern = rng.choice(config.TEMPORAL_PATTERNS)
-            instruction_base = rng.choice(config.INSTRUCTION_POOL)
-            instruction = f'{instruction_base}（当前周报风格：{style_label}）'
+            instruction = rng.choice(config.INSTRUCTION_POOL)
 
             num_seeds = rng.randint(config.SEEDS_PER_SAMPLE_MIN, config.SEEDS_PER_SAMPLE_MAX)
             seeds = rng.sample(TASK_SEEDS_DB[role], min(num_seeds, len(TASK_SEEDS_DB[role])))
@@ -77,6 +70,7 @@ def generate_single_sample(style_name, prompt_template, sample_idx):
 
             formatted_prompt = build_prompt(
                 prompt_template,
+                style_name,
                 role,
                 scenario,
                 task_seeds_str,
