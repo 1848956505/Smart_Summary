@@ -3,7 +3,14 @@ import os
 import random
 
 
-def merge_and_shuffle_datasets(input_dir, output_file):
+def project_record(record, fields_to_keep=None):
+    if fields_to_keep is None:
+        return record
+
+    return {field: record.get(field) for field in fields_to_keep if field in record}
+
+
+def merge_and_shuffle_datasets(input_dir, output_file, fields_to_keep=None):
     combined_data = []
 
     if not os.path.exists(input_dir):
@@ -27,7 +34,8 @@ def merge_and_shuffle_datasets(input_dir, output_file):
                     if not line:
                         continue
                     try:
-                        combined_data.append(json.loads(line))
+                        record = json.loads(line)
+                        combined_data.append(project_record(record, fields_to_keep))
                         count += 1
                     except json.JSONDecodeError:
                         print(f'跳过无效行：{file_name}')
@@ -51,4 +59,9 @@ def merge_and_shuffle_datasets(input_dir, output_file):
 if __name__ == '__main__':
     INPUT_FOLDER = 'generated_data_v8_2'
     OUTPUT_JSON = 'train_data_v8.2.json'
-    merge_and_shuffle_datasets(INPUT_FOLDER, OUTPUT_JSON)
+
+    # 设为 ['instruction', 'input', 'output'] 可只导出这三个字段；
+    # 设为 None 可保留全部字段。
+    FIELDS_TO_KEEP = ['instruction', 'input', 'output']
+
+    merge_and_shuffle_datasets(INPUT_FOLDER, OUTPUT_JSON, FIELDS_TO_KEEP)

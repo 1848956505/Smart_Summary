@@ -14,7 +14,7 @@ BASE_URL = "https://api.deepseek.com"
 MODEL_NAME = "deepseek-chat"
 
 # --- 2. 运行参数配置 ---
-SAMPLES_PER_STYLE = 10     # 每种风格生成的数量
+SAMPLES_PER_STYLE = 900     # 每种风格生成的数量
 MAX_RETRIES = 3
 SLEEP_TIME = 0.5
 
@@ -38,7 +38,11 @@ SEED_FILE = "task_seeds.json"
 OUTPUT_DIR = "generated_data_v8_2"           # 输出目录
 OUTPUT_FILE_PATTERN = "dataset_{style}_v8.2.jsonl"  # 输出文件命名模式
 
-# --- 6. 岗位角色树 (Role Tree) ---
+# --- 6. 风格生成配置 ---
+# 可改为 ['from'] 仅生成表格风格，或 ['list'] 仅生成列表风格
+ENABLED_STYLES = ['list']
+
+# --- 7. 岗位角色树 (Role Tree) ---
 DETAILED_ROLES = {
     "算法方向":[
         "大模型算法工程师 (专注于Pre-training, SFT, RLHF, 显存优化)",
@@ -76,7 +80,7 @@ DETAILED_ROLES = {
     ]
 }
 
-# --- 7. 场景池 (Scenario Pool) - 模拟真实噪声 ---
+# --- 8. 场景池 (Scenario Pool) - 模拟真实噪声 ---
 SCENARIO_POOL = [
     "语音转文字输入，存在少量同音字错误，基本无标点，像边走边说。",
     "周五临下班快速记录，句子很短，逻辑跳跃，带少量不耐烦情绪。",
@@ -87,7 +91,7 @@ SCENARIO_POOL = [
     "边排查问题边记录，术语较多，结论未完全确认，存在模糊表达。"
 ]
 
-# --- 8. 时间轴标记模式 (Temporal Patterns) - 【V6核心】 ---
+# --- 9. 时间轴标记模式 (Temporal Patterns) - 【V6核心】 ---
 TEMPORAL_PATTERNS = [
     "显式时间：周一、周三、昨天、今天上午这类表达较明显。",
     "相对时间：这周初、后来、临下班前、刚刚、前面这种表达较明显。",
@@ -95,7 +99,7 @@ TEMPORAL_PATTERNS = [
     "弱时间表达：几乎不说具体时间，靠话题自然切换。"
 ]
 
-# --- 9. 日常琐事池 (Routine Tasks) - 【V6核心：增加真实感】 ---
+# --- 10. 日常琐事池 (Routine Tasks) - 【V6核心：增加真实感】 ---
 ROUTINE_TASKS = [
     "参加了周三下午全员例会，听老板讲了两个小时PPT，耽误了正事。",
     "填报销单、OA系统流程审批，那个系统卡得要死，填了好几次才成功。",
@@ -107,7 +111,7 @@ ROUTINE_TASKS = [
     "会开到一半突然被拉去处理一个临时小问题，节奏全乱了。"
 ]
 
-# --- 10. 指令池 (Instruction Pool) ---
+# --- 11. 指令池 (Instruction Pool) ---
 INSTRUCTION_POOL = [
     "请将下面的工作流水转化为专业的周报。",
     "帮我把这些碎片化的工作记录整理成结构化总结。",

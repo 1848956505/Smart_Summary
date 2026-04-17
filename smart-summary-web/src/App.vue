@@ -1,5 +1,7 @@
 ﻿<template>
-  <router-view />
+  <div class="app-scale-shell">
+    <router-view />
+  </div>
 </template>
 
 <script setup>
@@ -37,3 +39,15 @@ onMounted(() => {
 provide('userInfo', { userInfo, setUser, logout })
 provide('theme', { currentTheme, setTheme })
 </script>
+
+<style scoped>
+.app-scale-shell {
+  --app-view-scale: 0.8;
+  width: calc(100% / var(--app-view-scale));
+  height: calc(100% / var(--app-view-scale));
+  min-width: calc(100% / var(--app-view-scale));
+  min-height: calc(100% / var(--app-view-scale));
+  transform: scale(var(--app-view-scale));
+  transform-origin: top left;
+}
+</style>

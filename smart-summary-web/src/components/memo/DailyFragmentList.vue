@@ -1,47 +1,59 @@
-﻿<template>
+<template>
   <div class="daily-list">
-    <section v-for="day in weekDays" :key="day.date" class="daily-section app-surface">
+    <section
+      v-for="day in weekDays"
+      :key="day.date"
+      :id="`memo-day-${day.date}`"
+      class="daily-section"
+      :class="{ 'daily-section--active': activeDate === day.date }"
+    >
       <div class="daily-section__header">
+        <button
+          class="daily-section__calendar"
+          :class="{ 'daily-section__calendar--active': activeDate === day.date }"
+          @click="$emit('select-date', day.date)"
+          :title="`选中 ${day.date}`"
+        >
+          <span class="daily-section__calendar-prefix">{{ day.prefix }}</span>
+          <span class="daily-section__calendar-day">{{ day.day }}</span>
+        </button>
+
         <div class="daily-section__heading">
+          <div class="daily-section__title-row">
+            <h3>{{ day.date }}</h3>
+            <span v-if="activeDate === day.date" class="daily-section__active-chip">Active</span>
+          </div>
           <p class="daily-section__eyebrow">{{ day.label }}</p>
-          <h3>{{ day.date }}</h3>
         </div>
-        <div class="daily-section__actions">
-          <el-input
-            v-model="quickInputs[day.date]"
-            size="small"
-            placeholder="输入一条快速碎片，回车即可保存"
-            @keyup.enter="quickAdd(day.date)"
-            class="daily-section__quick-input"
-          />
-          <el-button size="small" type="primary" plain @click="quickAdd(day.date)">
-            <el-icon><Plus /></el-icon>
-            快速录入
-          </el-button>
-          <el-button size="small" @click="$emit('add-detail', day.date)">
-            <el-icon><EditPen /></el-icon>
-            详细录入
-          </el-button>
+
+        <div class="daily-section__summary">
+          <span class="daily-section__count">{{ (grouped[day.date] || []).length }} 条</span>
+          <span class="daily-section__hint">点击日历块可切换录入日期</span>
         </div>
       </div>
 
       <div class="daily-section__body" @dragover.prevent @drop="handleDropToEnd(day.date)">
-        <FragmentCard
+        <div
           v-for="(fragment, index) in grouped[day.date] || []"
           :key="fragment.id"
-          class="draggable-fragment"
-          draggable="true"
-          :fragment="fragment"
-          :can-move-up="index > 0"
-          :can-move-down="index < (grouped[day.date] || []).length - 1"
-          @dragstart="handleDragStart(day.date, fragment.id)"
-          @dragover.prevent
-          @drop="handleDrop(day.date, index)"
-          @edit="$emit('edit-fragment', $event)"
-          @delete="$emit('delete-fragment', $event)"
-          @move-up="$emit('move-up', $event)"
-          @move-down="$emit('move-down', $event)"
-        />
+          class="daily-section__item"
+        >
+          <div class="daily-section__rail-dot"></div>
+          <FragmentCard
+            class="draggable-fragment"
+            draggable="true"
+            :fragment="fragment"
+            :can-move-up="index > 0"
+            :can-move-down="index < (grouped[day.date] || []).length - 1"
+            @dragstart="handleDragStart(day.date, fragment.id)"
+            @dragover.prevent
+            @drop="handleDrop(day.date, index)"
+            @edit="$emit('edit-fragment', $event)"
+            @delete="$emit('delete-fragment', $event)"
+            @move-up="$emit('move-up', $event)"
+            @move-down="$emit('move-down', $event)"
+          />
+        </div>
         <el-empty v-if="!(grouped[day.date] || []).length" description="当天暂无记录" :image-size="56" />
       </div>
     </section>
@@ -50,22 +62,22 @@
 
 <script setup>
 import { computed, reactive } from 'vue'
-import { Plus, EditPen } from '@element-plus/icons-vue'
 import FragmentCard from './FragmentCard.vue'
 
 const props = defineProps({
   fragments: { type: Array, default: () => [] },
   weekStartDate: { type: String, default: '' },
   weekEndDate: { type: String, default: '' },
+  activeDate: { type: String, default: '' },
   statusFilter: { type: String, default: 'all' },
   tagFilter: { type: String, default: 'all' },
   keyword: { type: String, default: '' }
 })
 
-const emit = defineEmits(['add-quick', 'add-detail', 'edit-fragment', 'delete-fragment', 'move-up', 'move-down', 'reorder-day'])
+const emit = defineEmits(['edit-fragment', 'delete-fragment', 'move-up', 'move-down', 'reorder-day', 'select-date'])
 
 const weekDayLabels = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-const quickInputs = reactive({})
+const weekDayPrefixes = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
 const dragState = reactive({ sourceDate: '', sourceId: null })
 
 const weekDays = computed(() => {
@@ -73,7 +85,12 @@ const weekDays = computed(() => {
   return Array.from({ length: 7 }).map((_, idx) => {
     const d = new Date(start)
     d.setDate(start.getDate() + idx)
-    return { label: weekDayLabels[idx], date: formatLocalDate(d) }
+    return {
+      label: weekDayLabels[idx],
+      prefix: weekDayPrefixes[idx],
+      date: formatLocalDate(d),
+      day: String(d.getDate()).padStart(2, '0')
+    }
   })
 })
 
@@ -96,13 +113,6 @@ const grouped = computed(() => {
   })
   return map
 })
-
-const quickAdd = (date) => {
-  const text = (quickInputs[date] || '').trim()
-  if (!text) return
-  emit('add-quick', { date, text })
-  quickInputs[date] = ''
-}
 
 const handleDragStart = (date, id) => {
   dragState.sourceDate = date
@@ -153,59 +163,163 @@ function formatLocalDate(date) {
 .daily-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
+  position: relative;
+}
+
+.daily-list::before {
+  content: '';
+  position: absolute;
+  left: 42px;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(148, 163, 184, 0.45) 10%, rgba(148, 163, 184, 0.45) 90%, transparent);
 }
 
 .daily-section {
-  border-radius: var(--app-radius-2xl);
-  overflow: hidden;
+  position: relative;
+  padding: 4px 0 0;
+}
+
+.daily-section--active .daily-section__heading h3 {
+  color: var(--app-color-primary-strong);
 }
 
 .daily-section__header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 14px;
-  padding: 16px 18px;
-  border-bottom: 1px solid var(--app-color-border);
-  background: var(--app-panel-bg-soft);
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.daily-section__calendar {
+  width: 52px;
+  height: 60px;
+  padding: 8px 0 6px;
+  border-radius: 18px;
+  border: 1px solid var(--app-color-border);
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.daily-section__calendar--active {
+  border-color: rgba(37, 99, 235, 0.26);
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+  transform: translateY(-1px);
+}
+
+.daily-section__calendar-prefix {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--app-color-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.daily-section__calendar-day {
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--app-color-text-strong);
+  line-height: 1;
 }
 
 .daily-section__heading {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  min-width: 0;
+  flex: 1;
 }
 
-.daily-section__eyebrow {
-  font-size: 12px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--app-color-text-muted);
-}
-
-.daily-section__heading h3 {
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--app-color-text-strong);
-}
-
-.daily-section__actions {
+.daily-section__title-row {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-.daily-section__quick-input {
-  width: min(360px, 44vw);
+.daily-section__heading h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--app-color-text-strong);
+}
+
+.daily-section__active-chip {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--app-color-primary-soft);
+  color: var(--app-color-primary-strong);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.daily-section__eyebrow {
+  margin-top: 5px;
+  color: var(--app-color-text-muted);
+  font-size: 12px;
+}
+
+.daily-section__summary {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: flex-end;
+  text-align: right;
+  min-width: 0;
+}
+
+.daily-section__count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--app-color-text-strong);
+}
+
+.daily-section__hint {
+  font-size: 11px;
+  color: var(--app-color-text-muted);
 }
 
 .daily-section__body {
-  padding: 16px;
+  position: relative;
+  margin-left: 68px;
+  padding-left: 18px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.daily-section__body::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: rgba(226, 232, 240, 0.85);
+}
+
+.daily-section__item {
+  position: relative;
+}
+
+.daily-section__rail-dot {
+  position: absolute;
+  left: -24px;
+  top: 22px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #94a3b8;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.15);
+  z-index: 1;
 }
 
 .draggable-fragment {
@@ -218,12 +332,27 @@ function formatLocalDate(date) {
 
 @media (max-width: 860px) {
   .daily-section__header {
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
   }
 
-  .daily-section__quick-input {
-    width: 100%;
+  .daily-section__summary {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .daily-list::before,
+  .daily-section__body::before {
+    display: none;
+  }
+
+  .daily-section__body {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .daily-section__rail-dot {
+    display: none;
   }
 }
 </style>

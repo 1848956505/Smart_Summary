@@ -5,10 +5,6 @@
         <p class="memo-sidebar__eyebrow">Memo Studio</p>
         <h3>碎片记录本</h3>
       </div>
-      <el-button size="small" type="primary" @click="$emit('create-folder')">
-        <el-icon><FolderAdd /></el-icon>
-        新建文件夹
-      </el-button>
     </div>
 
     <div class="memo-sidebar__tree">
@@ -70,6 +66,13 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="memo-sidebar__footer">
+      <el-button class="memo-sidebar__create-btn" @click="$emit('create-folder')">
+        <el-icon><FolderAdd /></el-icon>
+        新建文件夹
+      </el-button>
     </div>
   </aside>
 </template>
@@ -143,6 +146,20 @@ const statusLabel = (status) => {
   gap: 12px;
   padding-right: 4px;
   min-height: 0;
+}
+
+.memo-sidebar__footer {
+  margin-top: auto;
+}
+
+.memo-sidebar__create-btn {
+  width: 100%;
+  height: 44px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(79, 70, 229, 0.12));
+  border-color: rgba(37, 99, 235, 0.14);
+  color: var(--app-color-primary-strong);
+  font-weight: 700;
 }
 
 .folder-block {

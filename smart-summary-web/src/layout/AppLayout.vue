@@ -12,10 +12,9 @@
       @select="handleSelect"
       @logout="handleLogout"
       @open-settings="openSettings"
-    />
+    /> 
 
     <div class="app-layout__main">
-      <AppHeader :title="pageTitle" :breadcrumb="breadcrumbItems" />
       <AppContent>
         <router-view />
       </AppContent>
@@ -27,7 +26,6 @@
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AppSidebar from './AppSidebar.vue'
-import AppHeader from './AppHeader.vue'
 import AppContent from './AppContent.vue'
 import { appMenu } from '@/constants/menu'
 import { appRoutes } from '@/constants/routes'
@@ -52,25 +50,6 @@ const activeKey = computed(() => {
   if (route.path.startsWith('/app/history')) return 'history'
   if (route.path.startsWith('/app/settings')) return 'settings'
   return 'dashboard'
-})
-
-const pageTitle = computed(() => {
-  const titles = {
-    dashboard: '工作台',
-    generate: '智能生成',
-    memos: '碎片记录本',
-    history: '历史周报',
-    settings: '系统设置'
-  }
-  return titles[activeKey.value] || '工作台'
-})
-
-const breadcrumbItems = computed(() => {
-  const trail = [{ label: '工作台', to: appRoutes.dashboard }]
-  if (activeKey.value !== 'dashboard') {
-    trail.push({ label: pageTitle.value })
-  }
-  return trail
 })
 
 const menuItems = appMenu

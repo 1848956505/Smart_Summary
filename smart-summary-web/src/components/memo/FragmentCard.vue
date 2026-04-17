@@ -1,6 +1,6 @@
-﻿<template>
+<template>
   <article class="fragment-card" :class="`status-${fragment.status || 'todo'}`">
-    <div class="fragment-card__stripe"></div>
+    <div class="fragment-card__dot"></div>
 
     <div class="fragment-card__main">
       <div class="fragment-card__topline">
@@ -17,21 +17,17 @@
     </div>
 
     <div class="fragment-card__actions">
-      <el-button size="small" text @click="$emit('edit', fragment)">
+      <el-button size="small" text @click="$emit('edit', fragment)" title="编辑">
         <el-icon><EditPen /></el-icon>
-        编辑
       </el-button>
-      <el-button size="small" text :disabled="!canMoveUp" @click="$emit('move-up', fragment)">
+      <el-button size="small" text :disabled="!canMoveUp" @click="$emit('move-up', fragment)" title="上移">
         <el-icon><Top /></el-icon>
-        上移
       </el-button>
-      <el-button size="small" text :disabled="!canMoveDown" @click="$emit('move-down', fragment)">
+      <el-button size="small" text :disabled="!canMoveDown" @click="$emit('move-down', fragment)" title="下移">
         <el-icon><Bottom /></el-icon>
-        下移
       </el-button>
-      <el-button size="small" text type="danger" @click="$emit('delete', fragment.id)">
+      <el-button size="small" text type="danger" @click="$emit('delete', fragment.id)" title="删除">
         <el-icon><Delete /></el-icon>
-        删除
       </el-button>
     </div>
   </article>
@@ -70,9 +66,10 @@ const displayDate = computed(() => (props.fragment.workDate || '').slice(0, 10))
 <style scoped>
 .fragment-card {
   position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
   gap: 14px;
-  padding: 16px;
+  padding: 16px 18px;
   border-radius: var(--app-radius-xl);
   background: #fff;
   border: 1px solid var(--app-color-border);
@@ -86,20 +83,22 @@ const displayDate = computed(() => (props.fragment.workDate || '').slice(0, 10))
   border-color: rgba(37, 99, 235, 0.18);
 }
 
-.fragment-card__stripe {
-  width: 6px;
-  border-radius: 999px;
+.fragment-card__dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-top: 6px;
   background: #94a3b8;
+  box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.12);
   flex-shrink: 0;
 }
 
-.status-done .fragment-card__stripe { background: linear-gradient(180deg, #22c55e, #16a34a); }
-.status-doing .fragment-card__stripe { background: linear-gradient(180deg, #f59e0b, #d97706); }
-.status-blocked .fragment-card__stripe { background: linear-gradient(180deg, #ef4444, #dc2626); }
-.status-todo .fragment-card__stripe { background: linear-gradient(180deg, #64748b, #475569); }
+.status-done .fragment-card__dot { background: linear-gradient(180deg, #22c55e, #16a34a); box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12); }
+.status-doing .fragment-card__dot { background: linear-gradient(180deg, #f59e0b, #d97706); box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.12); }
+.status-blocked .fragment-card__dot { background: linear-gradient(180deg, #ef4444, #dc2626); box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12); }
+.status-todo .fragment-card__dot { background: linear-gradient(180deg, #64748b, #475569); box-shadow: 0 0 0 4px rgba(100, 116, 139, 0.12); }
 
 .fragment-card__main {
-  flex: 1;
   min-width: 0;
 }
 
@@ -139,22 +138,34 @@ const displayDate = computed(() => (props.fragment.workDate || '').slice(0, 10))
 
 .fragment-card__actions {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: flex-end;
-  min-width: 88px;
+  align-items: flex-start;
+  gap: 6px;
+  margin-left: 4px;
+  opacity: 0.75;
+}
+
+.fragment-card__actions:hover {
+  opacity: 1;
+}
+
+.fragment-card__actions :deep(.el-button) {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 10px;
 }
 
 @media (max-width: 820px) {
   .fragment-card {
-    flex-direction: column;
+    grid-template-columns: 18px minmax(0, 1fr);
   }
 
   .fragment-card__actions {
-    flex-direction: row;
+    grid-column: 2;
+    justify-content: flex-start;
+    margin-left: 0;
+    padding-top: 8px;
     flex-wrap: wrap;
-    align-items: center;
-    min-width: 0;
   }
 }
 </style>

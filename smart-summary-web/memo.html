@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>碎片记录本 - 极简时间轴版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', 'PingFang SC', sans-serif; background-color: #fcfcfd; }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        
+        /* 时间轴细线 */
+        .timeline-line { position: absolute; left: 48px; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent, #e2e8f0 10%, #e2e8f0 90%, transparent); z-index: 0; }
+        
+        /* 呼吸灯效果 */
+        @keyframes pulse-soft {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        .active-pulse { animation: pulse-soft 2s infinite; }
+        
+        .date-number { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="text-slate-700 h-screen overflow-hidden flex">
+
+    <!-- 左侧边栏 (保持极简) -->
+    <aside class="w-64 bg-white border-r border-slate-100 flex flex-col shrink-0">
+        <div class="p-8">
+            <div class="flex items-center gap-3 mb-10">
+                <div class="w-7 h-7 bg-blue-600 rounded-lg rotate-3 shadow-lg flex items-center justify-center text-white">
+                    <i class="fas fa-quote-right text-[10px]"></i>
+                </div>
+                <h1 class="text-lg font-bold tracking-tight text-slate-800 italic">MEMO.</h1>
+            </div>
+            <nav class="space-y-1">
+                <a href="#" class="flex items-center px-4 py-2 bg-slate-50 text-blue-600 rounded-xl font-semibold text-sm group">
+                    <i class="far fa-folder-open mr-3 text-slate-400 group-hover:text-blue-500"></i> 碎片记录本
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-slate-500 hover:bg-slate-50 rounded-xl text-sm transition-all">
+                    <i class="far fa-folder mr-3 text-slate-300"></i> 项目归档
+                </a>
+            </nav>
+        </div>
+        <div class="mt-auto p-6">
+            <button class="w-full py-2 text-slate-400 border border-slate-100 rounded-xl text-xs hover:bg-slate-50 transition-all">
+                + 新建文件夹
+            </button>
+        </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="flex-1 flex flex-col relative">
+        
+        <!-- 顶部工具栏 -->
+        <header class="h-20 bg-white/80 backdrop-blur-md px-10 flex items-center justify-between shrink-0 z-20 border-b border-slate-50">
+            <div>
+                <h2 class="text-lg font-bold text-slate-800">2026-04-06 ~ 04-12 工作周报</h2>
+                <div class="flex items-center gap-3 mt-1">
+                    <span class="flex items-center text-[10px] text-slate-400 font-medium bg-slate-100 px-2 py-0.5 rounded">WEEKLY WORKSPACE</span>
+                    <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                    <span class="text-[10px] text-blue-500 font-bold uppercase tracking-widest">Active</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex -space-x-2">
+                    <div class="w-7 h-7 rounded-full border-2 border-white bg-blue-100 text-[10px] flex items-center justify-center font-bold text-blue-600">8</div>
+                    <div class="w-7 h-7 rounded-full border-2 border-white bg-slate-100 text-[10px] flex items-center justify-center font-bold text-slate-400">4</div>
+                </div>
+                <button class="px-5 py-2.5 bg-slate-900 hover:bg-black text-white text-xs font-bold rounded-full shadow-lg transition-all flex items-center gap-2">
+                    <i class="fas fa-magic text-blue-400"></i> 一键生成周报
+                </button>
+            </div>
+        </header>
+
+        <!-- 中间：碎片展示区 (时间轴) -->
+        <div class="flex-1 overflow-y-auto custom-scrollbar px-10 py-10 relative bg-[#fcfcfd]">
+            <!-- 时间轴细线 -->
+            <div class="timeline-line"></div>
+
+            <!-- 日期节点区块：今天 -->
+            <div class="relative mb-16">
+                <!-- 优化后的日期路标 (节点样式) -->
+                <div class="relative z-10 flex items-start gap-6 mb-8">
+                    <!-- 精致的日期卡片 -->
+                    <div class="w-12 h-14 bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col items-center justify-center shrink-0 active-pulse">
+                        <span class="text-[9px] font-bold text-blue-500 uppercase leading-none mb-1">MON</span>
+                        <span class="text-xl font-bold text-slate-800 leading-none date-number">06</span>
+                    </div>
+                    <!-- 日期标题 -->
+                    <div class="pt-1">
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-sm font-bold text-slate-800 tracking-tight">2026年4月6日</h3>
+                            <span class="px-1.5 py-0.5 bg-blue-50 text-blue-600 text-[9px] font-black rounded uppercase">Today</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-0.5 font-medium">3 个任务正在进行中</p>
+                    </div>
+                </div>
+
+                <!-- 碎片内容流 -->
+                <div class="ml-[72px] space-y-5">
+                    <!-- 碎片卡片 -->
+                    <div class="group relative bg-white p-5 rounded-2xl border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.04)] hover:border-slate-200 transition-all">
+                        <!-- 侧边指示点 -->
+                        <div class="absolute -left-[27px] top-7 w-2 h-2 rounded-full bg-blue-500 border-2 border-white"></div>
+                        
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-[10px] font-bold text-slate-300 bg-slate-50 px-2 py-0.5 rounded tracking-tighter date-number">10:45 AM</span>
+                            <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                                <button class="w-6 h-6 rounded-md hover:bg-slate-50 text-slate-400 flex items-center justify-center"><i class="far fa-edit text-[10px]"></i></button>
+                                <button class="w-6 h-6 rounded-md hover:bg-red-50 text-red-400 flex items-center justify-center"><i class="far fa-trash-alt text-[10px]"></i></button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-600 leading-relaxed">重构了首页导航栏的响应式样式，解决了移动端下菜单重叠的 Bug。目前已完成测试环境部署。</p>
+                        <div class="mt-4 flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-bold rounded-md">DONE</span>
+                            <span class="px-2 py-0.5 bg-slate-50 text-slate-400 text-[10px] font-bold rounded-md">#UI/UX</span>
+                        </div>
+                    </div>
+
+                    <div class="group relative bg-white p-5 rounded-2xl border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.04)] hover:border-slate-200 transition-all">
+                        <div class="absolute -left-[27px] top-7 w-2 h-2 rounded-full bg-slate-200 border-2 border-white"></div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-[10px] font-bold text-slate-300 bg-slate-50 px-2 py-0.5 rounded tracking-tighter date-number">03:12 PM</span>
+                        </div>
+                        <p class="text-sm text-slate-600 leading-relaxed">初步整理周三会议需要的 PPT 提纲，内容包含上周的性能监控报告及本周的优化目标。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 日期区块：昨日 -->
+            <div class="relative mb-10 opacity-60 hover:opacity-100 transition-opacity">
+                <div class="relative z-10 flex items-start gap-6 mb-6">
+                    <!-- 历史日期样式 (更轻) -->
+                    <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-2xl flex flex-col items-center justify-center shrink-0">
+                        <span class="text-[8px] font-bold text-slate-400 uppercase leading-none mb-1">SUN</span>
+                        <span class="text-lg font-bold text-slate-500 leading-none date-number">05</span>
+                    </div>
+                    <div class="pt-1">
+                        <h3 class="text-sm font-bold text-slate-500">2026年4月5日</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部：输入框区域 -->
+        <div class="p-8 bg-white/60 backdrop-blur-sm z-20">
+            <div class="max-w-4xl mx-auto">
+                <div class="relative bg-white border border-slate-200 shadow-[0_15px_40px_rgba(0,0,0,0.04)] rounded-[24px] p-2 transition-all focus-within:border-blue-400 focus-within:shadow-[0_20px_50px_rgba(59,130,246,0.08)]">
+                    <div class="flex items-end gap-2 px-4 py-2">
+                        <div class="flex-1">
+                            <textarea 
+                                placeholder="记下此刻的工作碎片..." 
+                                rows="1" 
+                                class="w-full bg-transparent border-none focus:ring-0 text-slate-700 placeholder:text-slate-300 py-2 resize-none text-[15px] font-medium"
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                            ></textarea>
+                        </div>
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg shadow-blue-100 transition-all active:scale-90 shrink-0 mb-1">
+                            <i class="fas fa-arrow-up text-sm"></i>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between px-4 pb-2 pt-1 border-t border-slate-50 mt-1">
+                        <div class="flex gap-4">
+                            <button class="text-slate-300 hover:text-blue-500 text-[11px] font-bold flex items-center gap-1.5 transition-colors"><i class="fas fa-hashtag"></i> 标签</button>
+                            <button class="text-slate-300 hover:text-blue-500 text-[11px] font-bold flex items-center gap-1.5 transition-colors"><i class="far fa-clock"></i> 状态</button>
+                        </div>
+                        <span class="text-[9px] text-slate-300 font-bold tracking-widest uppercase italic">Press Enter to save</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+</body>
+</html>

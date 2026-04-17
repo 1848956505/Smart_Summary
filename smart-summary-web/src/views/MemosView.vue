@@ -27,6 +27,7 @@
         @export-markdown="handleExportMarkdown"
         @export-pdf="handleExportPdf"
         @archive="handleArchive"
+        @open-stats="statsDrawerVisible = true"
       />
 
       <div v-if="currentWeek" class="memo-workspace__filters">
@@ -42,33 +43,58 @@
           <el-option v-for="tag in availableTags" :key="tag" :label="tag" :value="tag" />
         </el-select>
         <el-input v-model="filters.keyword" size="small" clearable placeholder="搜索标题或内容" style="width: 240px" />
+        <el-select v-model="activeDate" size="small" style="width: 130px" @change="handleSelectDate">
+          <el-option
+            v-for="day in weekNavigationOptions"
+            :key="day.date"
+            :label="day.label"
+            :value="day.date"
+          />
+        </el-select>
+        <el-button size="small" text @click="jumpToDefaultDate">
+          <el-icon><Calendar /></el-icon>
+          默认
+        </el-button>
+        <el-button size="small" text @click="recordsCollapsed = !recordsCollapsed">
+          <el-icon><Fold v-if="!recordsCollapsed" /><Expand v-else /></el-icon>
+          {{ recordsCollapsed ? '展开' : '收起' }}
+        </el-button>
       </div>
 
       <div v-if="currentWeek" class="memo-workspace__body">
-        <DailyFragmentList
-          :fragments="fragments"
-          :week-start-date="currentWeek.weekStartDate"
-          :week-end-date="currentWeek.weekEndDate"
-          :status-filter="filters.status"
-          :tag-filter="filters.tag"
-          :keyword="filters.keyword"
-          @add-quick="handleAddQuick"
-          @add-detail="openCreateFragmentDialog"
-          @edit-fragment="openEditFragmentDialog"
-          @delete-fragment="handleDeleteFragment"
-          @move-up="handleMoveUp"
-          @move-down="handleMoveDown"
-          @reorder-day="handleReorderDay"
-        />
-
-        <div class="memo-workspace__sidepanels">
-          <WeeklyStatsPanel :fragments="fragments" />
-          <WeeklySummaryPanel
-            :summary="summaryContent"
-            @update:summary="summaryContent = $event"
+        <div v-show="!recordsCollapsed" class="memo-workspace__records-shell">
+          <DailyFragmentList
+            :fragments="fragments"
+            :week-start-date="currentWeek.weekStartDate"
+            :week-end-date="currentWeek.weekEndDate"
+            :active-date="activeDate"
+            :status-filter="filters.status"
+            :tag-filter="filters.tag"
+            :keyword="filters.keyword"
+            @edit-fragment="openEditFragmentDialog"
+            @delete-fragment="handleDeleteFragment"
+            @move-up="handleMoveUp"
+            @move-down="handleMoveDown"
+            @reorder-day="handleReorderDay"
+            @select-date="handleSelectDate"
           />
         </div>
+        <div v-if="recordsCollapsed" class="memo-workspace__collapsed">
+          <el-empty description="记录已收起">
+            <el-button type="primary" plain @click="recordsCollapsed = false">展开记录</el-button>
+          </el-empty>
+        </div>
       </div>
+
+      <MemoQuickComposer
+        v-if="currentWeek"
+        v-model="quickText"
+        :active-date="activeDate"
+        placeholder="记下此刻的工作碎片..."
+        @submit="handleQuickSubmit"
+        @open-detail="openCreateFragmentDialog(activeDate)"
+        @jump-today="jumpToDefaultDate"
+      />
 
       <div v-else class="memo-workspace__empty">
         <el-empty description="请选择或创建周记录" :image-size="88">
@@ -101,19 +127,31 @@
       :model-value="fragmentDialog.draft"
       @submit="submitFragmentDialog"
     />
+
+    <el-drawer
+      v-model="statsDrawerVisible"
+      title="本周统计"
+      size="420px"
+      append-to-body
+      :with-header="true"
+    >
+      <WeeklyStatsPanel :fragments="fragments" />
+    </el-drawer>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, nextTick, onMounted, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { Calendar, Fold, Expand } from '@element-plus/icons-vue'
 import axios from 'axios'
 import html2pdf from 'html2pdf.js'
 import MemoSidebar from '@/components/memo/MemoSidebar.vue'
 import WeekRecordHeader from '@/components/memo/WeekRecordHeader.vue'
 import DailyFragmentList from '@/components/memo/DailyFragmentList.vue'
-import WeeklySummaryPanel from '@/components/memo/WeeklySummaryPanel.vue'
 import WeeklyStatsPanel from '@/components/memo/WeeklyStatsPanel.vue'
+import MemoQuickComposer from '@/components/memo/MemoQuickComposer.vue'
 import MemoFolderDialog from '@/components/memo/MemoFolderDialog.vue'
 import MemoWeekDialog from '@/components/memo/MemoWeekDialog.vue'
 import MemoFragmentDialog from '@/components/memo/MemoFragmentDialog.vue'
@@ -125,7 +163,11 @@ const selectedWeekId = ref(null)
 const currentWeek = ref(null)
 const fragments = ref([])
 const summaryContent = ref('')
+const quickText = ref('')
 const generating = ref(false)
+const statsDrawerVisible = ref(false)
+const recordsCollapsed = ref(false)
+const activeDate = ref('')
 const filters = reactive({
   status: 'all',
   tag: 'all',
@@ -152,6 +194,8 @@ const fragmentDialog = reactive({
   mode: 'create',
   draft: {}
 })
+
+const router = useRouter()
 
 const user = computed(() => {
   const userStr = localStorage.getItem('user')
@@ -183,6 +227,33 @@ const availableTags = computed(() => {
   }
   return Array.from(tags)
 })
+
+const weekNavigationOptions = computed(() => buildWeekDayItems(currentWeek.value))
+
+const syncActiveDate = () => {
+  activeDate.value = getDefaultWeekDate(currentWeek.value)
+}
+
+const handleSelectDate = async (date) => {
+  activeDate.value = date
+  await nextTick()
+  jumpToDate(date)
+}
+
+const jumpToDate = async (date) => {
+  if (!date) return
+  const target = document.getElementById(`memo-day-${date}`)
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+}
+
+const jumpToDefaultDate = async () => {
+  const targetDate = getDefaultWeekDate(currentWeek.value)
+  activeDate.value = targetDate
+  await nextTick()
+  jumpToDate(targetDate)
+}
 
 onMounted(async () => {
   if (!user.value?.id) return
@@ -331,6 +402,8 @@ const handleDeleteFolder = async (folder) => {
     currentWeek.value = null
     fragments.value = []
     summaryContent.value = ''
+    quickText.value = ''
+    activeDate.value = ''
     localStorage.removeItem('memo_selected_week_id')
   }
   await loadFolders()
@@ -402,6 +475,8 @@ const handleDeleteWeek = async (weekRecord) => {
     currentWeek.value = null
     fragments.value = []
     summaryContent.value = ''
+    quickText.value = ''
+    activeDate.value = ''
     localStorage.removeItem('memo_selected_week_id')
   }
 
@@ -415,20 +490,24 @@ const handleSelectWeek = async (weekRecord) => {
   localStorage.setItem('memo_selected_week_id', String(weekRecord.id))
   await loadWeekDetail(weekRecord.id)
   await loadFragments(weekRecord.id)
+  syncActiveDate()
+  await nextTick()
+  jumpToDate(activeDate.value)
 }
 
 const openCreateFragmentDialog = (date) => {
   if (!selectedWeekId.value) return
+  const targetDate = date || activeDate.value || currentWeek.value?.weekStartDate || formatLocalDate(new Date())
   fragmentDialog.mode = 'create'
   fragmentDialog.draft = {
     weekRecordId: selectedWeekId.value,
-    workDate: date,
+    workDate: targetDate,
     title: '',
     content: '',
     status: 'todo',
     priority: 'medium',
     tag: '未分类',
-    sortOrder: nextFragmentSortOrder(date)
+    sortOrder: nextFragmentSortOrder(targetDate)
   }
   fragmentDialog.visible = true
 }
@@ -467,8 +546,9 @@ const submitFragmentDialog = async (payload) => {
   }
 }
 
-const handleAddQuick = async ({ date, text }) => {
+const handleQuickSubmit = async (text) => {
   if (!selectedWeekId.value) return
+  const date = activeDate.value || currentWeek.value?.weekStartDate || formatLocalDate(new Date())
   await axios.post('/api/memo/fragments', {
     weekRecordId: selectedWeekId.value,
     workDate: date,
@@ -479,6 +559,7 @@ const handleAddQuick = async ({ date, text }) => {
     tag: '未分类',
     sortOrder: nextFragmentSortOrder(date)
   }, memoApi.value)
+  quickText.value = ''
   await loadFragments(selectedWeekId.value)
   await refreshWeekListMeta()
 }
@@ -540,7 +621,16 @@ const handleGenerateSummary = async () => {
     summaryContent.value = data.data.summary || ''
     await loadWeekDetail(selectedWeekId.value)
     await refreshWeekListMeta()
-    ElMessage.success('周报生成成功，已同步到历史记录')
+    localStorage.setItem('smart-summary:generate-result', JSON.stringify({
+      source: 'memo-week',
+      title: currentWeek.value?.title || '周报生成结果',
+      summary: data.data.summary || '',
+      weekTitle: currentWeek.value?.title || '',
+      weekRange: currentWeek.value ? `${currentWeek.value.weekStartDate} ~ ${currentWeek.value.weekEndDate}` : '',
+      createdAt: new Date().toISOString()
+    }))
+    await router.push({ path: '/app/generate', query: { source: 'memo-week' } })
+    ElMessage.success('周报生成成功，已跳转到智能生成页')
   } finally {
     generating.value = false
   }
@@ -629,6 +719,32 @@ const formatLocalDate = (date) => {
   return `${y}-${m}-${d}`
 }
 
+const buildWeekDayItems = (week) => {
+  if (!week?.weekStartDate) return []
+  const start = new Date(week.weekStartDate)
+  if (Number.isNaN(start.getTime())) return []
+  const labels = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+  const prefixes = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
+  return Array.from({ length: 7 }).map((_, idx) => {
+    const d = new Date(start)
+    d.setDate(start.getDate() + idx)
+    return {
+      date: formatLocalDate(d),
+      label: labels[idx],
+      prefix: prefixes[idx]
+    }
+  })
+}
+
+const getDefaultWeekDate = (week) => {
+  const items = buildWeekDayItems(week)
+  if (!items.length) {
+    return formatLocalDate(new Date())
+  }
+  const weekdayIndex = (new Date().getDay() + 6) % 7
+  return items[weekdayIndex]?.date || items[0].date
+}
+
 const getDefaultWeekRange = () => {
   const now = new Date()
   const day = now.getDay() || 7
@@ -679,8 +795,10 @@ const swapSortOrder = async (fragment, direction) => {
   display: flex;
   gap: 18px;
   min-height: 100%;
-  height: auto;
-  overflow: visible;
+  height: calc(100% + var(--app-space-6) * 2);
+  width: calc(100% + var(--app-space-6) * 2);
+  margin: calc(var(--app-space-6) * -1);
+  overflow: hidden;
 }
 
 .memo-workspace__content {
@@ -688,9 +806,9 @@ const swapSortOrder = async (fragment, direction) => {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
   min-height: 0;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .memo-workspace__filters {
@@ -701,21 +819,20 @@ const swapSortOrder = async (fragment, direction) => {
 }
 
 .memo-workspace__body {
-  display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(360px, 0.95fr);
+  display: flex;
+  flex-direction: column;
   gap: 16px;
   min-height: 0;
   flex: 1;
   align-items: stretch;
-  overflow: visible;
+  overflow: hidden;
 }
 
-.memo-workspace__sidepanels {
-  display: grid;
-  grid-template-rows: minmax(220px, 0.9fr) minmax(320px, 1.1fr);
-  gap: 16px;
+.memo-workspace__records-shell {
+  flex: 1;
   min-height: 0;
-  height: 100%;
+  overflow: auto;
+  padding-right: 4px;
 }
 
 .memo-workspace__empty {
@@ -729,13 +846,17 @@ const swapSortOrder = async (fragment, direction) => {
 @media (max-width: 1300px) {
   .memo-workspace {
     flex-direction: column;
-    overflow: visible;
+    overflow: hidden;
   }
 }
 
 @media (max-width: 1100px) {
   .memo-workspace__body {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
+}
+
+.memo-workspace__content :deep(.memo-composer) {
+  margin-top: 2px;
 }
 </style>

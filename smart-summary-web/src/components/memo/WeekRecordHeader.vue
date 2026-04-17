@@ -15,6 +15,10 @@
       </div>
     </div>
     <div class="week-header__actions" v-if="currentWeek">
+      <el-button size="small" text @click="$emit('open-stats')">
+        <el-icon><Grid /></el-icon>
+        统计
+      </el-button>
       <el-button size="small" type="primary" :loading="generating" @click="$emit('generate')">
         <el-icon><MagicStick /></el-icon>
         一键生成周报
@@ -44,7 +48,7 @@
 </template>
 
 <script setup>
-import { MagicStick, FolderOpened, CopyDocument, Document, Printer, Finished } from '@element-plus/icons-vue'
+import { MagicStick, FolderOpened, CopyDocument, Document, Printer, Finished, Grid } from '@element-plus/icons-vue'
 
 defineProps({
   currentWeek: { type: Object, default: null },
@@ -52,7 +56,7 @@ defineProps({
   generating: { type: Boolean, default: false }
 })
 
-defineEmits(['generate', 'save', 'copy', 'export-markdown', 'export-pdf', 'archive'])
+defineEmits(['generate', 'save', 'copy', 'export-markdown', 'export-pdf', 'archive', 'open-stats'])
 </script>
 
 <style scoped>

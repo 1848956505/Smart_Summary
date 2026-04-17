@@ -24,6 +24,14 @@ STYLE_LABEL_MAP = {
 }
 
 
+def get_enabled_styles():
+    enabled_styles = getattr(config, 'ENABLED_STYLES', list(PROMPT_MAP.keys()))
+    invalid_styles = [style for style in enabled_styles if style not in PROMPT_MAP]
+    if invalid_styles:
+        raise ValueError(f'Unsupported style keys in ENABLED_STYLES: {invalid_styles}')
+    return enabled_styles
+
+
 class SafeFormatDict(dict):
     def __missing__(self, key):
         return '{' + key + '}'
@@ -162,11 +170,15 @@ def generate_style_samples(style_name, prompt_template, total_samples):
 
 
 def main():
-    print(f'开始全量数据合成任务 | 目标：{len(PROMPT_MAP)} 种风格 x {config.SAMPLES_PER_STYLE} 条')
+    enabled_styles = get_enabled_styles()
+    enabled_prompt_map = {style: PROMPT_MAP[style] for style in enabled_styles}
+
+    print(f'开始全量数据合成任务 | 目标：{len(enabled_prompt_map)} 种风格 x {config.SAMPLES_PER_STYLE} 条')
+    print(f'   启用风格：{", ".join(enabled_styles)}')
     print(f'   配置: 温度={config.TEMPERATURE}, Top-p={config.TOP_P}, 随机种子={config.RANDOM_SEED}')
     print(f'   并行度: {config.NUM_WORKERS} 个线程')
 
-    for style_name, prompt_template in PROMPT_MAP.items():
+    for style_name, prompt_template in enabled_prompt_map.items():
         success_count = generate_style_samples(style_name, prompt_template, config.SAMPLES_PER_STYLE)
         print(f'{style_name} 风格完成: {success_count}/{config.SAMPLES_PER_STYLE} 条')
 
