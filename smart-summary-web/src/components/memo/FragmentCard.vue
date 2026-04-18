@@ -1,7 +1,5 @@
 <template>
   <article class="fragment-card" :class="`status-${fragment.status || 'todo'}`">
-    <div class="fragment-card__dot"></div>
-
     <div class="fragment-card__main">
       <div class="fragment-card__topline">
         <div class="fragment-card__meta">
@@ -67,8 +65,8 @@ const displayDate = computed(() => (props.fragment.workDate || '').slice(0, 10))
 .fragment-card {
   position: relative;
   display: grid;
-  grid-template-columns: 18px minmax(0, 1fr) auto;
-  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
   padding: 16px 18px;
   border-radius: var(--app-radius-xl);
   background: #fff;
@@ -82,21 +80,6 @@ const displayDate = computed(() => (props.fragment.workDate || '').slice(0, 10))
   box-shadow: 0 16px 34px rgba(15, 23, 42, 0.08);
   border-color: rgba(37, 99, 235, 0.18);
 }
-
-.fragment-card__dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  margin-top: 6px;
-  background: #94a3b8;
-  box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.12);
-  flex-shrink: 0;
-}
-
-.status-done .fragment-card__dot { background: linear-gradient(180deg, #22c55e, #16a34a); box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12); }
-.status-doing .fragment-card__dot { background: linear-gradient(180deg, #f59e0b, #d97706); box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.12); }
-.status-blocked .fragment-card__dot { background: linear-gradient(180deg, #ef4444, #dc2626); box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12); }
-.status-todo .fragment-card__dot { background: linear-gradient(180deg, #64748b, #475569); box-shadow: 0 0 0 4px rgba(100, 116, 139, 0.12); }
 
 .fragment-card__main {
   min-width: 0;
@@ -139,8 +122,8 @@ const displayDate = computed(() => (props.fragment.workDate || '').slice(0, 10))
 .fragment-card__actions {
   display: flex;
   align-items: flex-start;
-  gap: 6px;
-  margin-left: 4px;
+  gap: 8px;
+  margin-left: 2px;
   opacity: 0.75;
 }
 
@@ -149,19 +132,27 @@ const displayDate = computed(() => (props.fragment.workDate || '').slice(0, 10))
 }
 
 .fragment-card__actions :deep(.el-button) {
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   padding: 0;
-  border-radius: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(248, 250, 252, 0.92);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.04);
+}
+
+.fragment-card__actions :deep(.el-button:hover) {
+  border-color: rgba(37, 99, 235, 0.2);
+  background: #fff;
 }
 
 @media (max-width: 820px) {
   .fragment-card {
-    grid-template-columns: 18px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .fragment-card__actions {
-    grid-column: 2;
+    grid-column: 1;
     justify-content: flex-start;
     margin-left: 0;
     padding-top: 8px;

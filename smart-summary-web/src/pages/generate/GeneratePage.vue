@@ -32,9 +32,6 @@
           <div>
             <p class="generate-page__eyebrow">生成结果</p>
             <h2 class="app-title">结果预览</h2>
-            <p v-if="importedFromMemo" class="generate-page__notice">
-              已从碎片记录本接入本周周报结果
-            </p>
           </div>
           <div class="generate-page__actions">
             <AppButton @click="copyResult" :disabled="!result">复制</AppButton>
@@ -58,8 +55,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, reactive, ref } from 'vue'
 import { marked } from 'marked'
 import html2pdf from 'html2pdf.js'
 import { ElMessage } from 'element-plus'
@@ -70,30 +66,11 @@ import AppEmpty from '@/components/ui/AppEmpty.vue'
 import StyleSelector from '@/components/StyleSelector.vue'
 import { summaryService } from '@/services/summary.service'
 
-const route = useRoute()
 const form = reactive({ text: '', style: 'dingtalk' })
 const generating = ref(false)
 const result = ref('')
-const importedFromMemo = ref(false)
 
 const renderedResult = computed(() => (result.value ? marked.parse(result.value) : ''))
-
-const loadImportedResult = () => {
-  if (route.query.source !== 'memo-week') return
-  const raw = localStorage.getItem('smart-summary:generate-result')
-  if (!raw) return
-  try {
-    const payload = JSON.parse(raw)
-    if (payload?.summary) {
-      result.value = payload.summary
-      importedFromMemo.value = true
-    }
-  } catch {
-    // ignore malformed payload
-  } finally {
-    localStorage.removeItem('smart-summary:generate-result')
-  }
-}
 
 const handleGenerate = async () => {
   if (!form.text.trim()) {
@@ -115,8 +92,6 @@ const handleGenerate = async () => {
     generating.value = false
   }
 }
-
-onMounted(loadImportedResult)
 
 const copyResult = async () => {
   if (!result.value) return
@@ -151,7 +126,6 @@ const exportPDF = () => {
 
 const clearResult = () => {
   result.value = ''
-  importedFromMemo.value = false
 }
 </script>
 
@@ -178,12 +152,6 @@ const clearResult = () => {
   font-size: 12px;
   letter-spacing: 0.16em;
   color: var(--app-color-text-muted);
-}
-
-.generate-page__notice {
-  margin: 8px 0 0;
-  font-size: 12px;
-  color: var(--app-color-primary-strong);
 }
 
 .generate-page__content {
