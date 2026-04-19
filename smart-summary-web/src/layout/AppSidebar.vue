@@ -1,48 +1,52 @@
-﻿<template>
+<template>
   <aside :class="['app-sidebar', { 'app-sidebar--collapsed': collapsed }]">
-    <div class="app-sidebar__brand">
-      <div class="app-sidebar__logo">S</div>
-      <div class="app-sidebar__brand-text">
-        <h2>Smart Summary</h2>
-        <p>Enterprise Workspace</p>
-      </div>
-    </div>
-
-    <button class="app-sidebar__collapse" @click="$emit('toggle')">
-      <el-icon><Fold v-if="!collapsed" /><Expand v-else /></el-icon>
-      <span>收起导航</span>
-    </button>
-
-    <nav class="app-sidebar__nav">
-      <button
-        v-for="item in menuItems"
-        :key="item.key"
-        :class="['app-sidebar__item', { 'app-sidebar__item--active': activeKey === item.key }]"
-        @click="$emit('select', item.key)"
-      >
-        <el-icon class="app-sidebar__icon"><component :is="item.icon" /></el-icon>
-        <span class="app-sidebar__label">{{ item.label }}</span>
-      </button>
-    </nav>
-
-    <div class="app-sidebar__footer">
-      <div class="app-sidebar__user">
-        <div class="app-sidebar__avatar">{{ userAvatar }}</div>
-        <div class="app-sidebar__user-info">
-          <p class="app-sidebar__name">{{ displayUsername }}</p>
-          <p class="app-sidebar__meta">{{ userPosition || '企业协作空间' }}</p>
+    <div class="app-sidebar__shell">
+      <div class="app-sidebar__brand">
+        <div class="app-sidebar__mark">S</div>
+        <div class="app-sidebar__brand-copy">
+          <p class="app-sidebar__eyebrow">SMART SUMMARY</p>
+          <h2>产品导航</h2>
+          <p>清爽克制的全局侧边栏</p>
         </div>
       </div>
 
-      <div class="app-sidebar__actions">
-        <button class="app-sidebar__settings" @click="$emit('openSettings')">
-          <el-icon><Setting /></el-icon>
-          <span>系统偏好设置</span>
+      <button class="app-sidebar__collapse" type="button" @click="$emit('toggle')">
+        <el-icon><Fold v-if="!collapsed" /><Expand v-else /></el-icon>
+        <span class="app-sidebar__collapse-label">{{ collapsed ? '展开导航' : '收起导航' }}</span>
+      </button>
+
+      <nav class="app-sidebar__nav" aria-label="主导航">
+        <button
+          v-for="item in menuItems"
+          :key="item.key"
+          :class="['app-sidebar__item', { 'app-sidebar__item--active': activeKey === item.key }]"
+          type="button"
+          @click="$emit('select', item.key)"
+        >
+          <el-icon class="app-sidebar__icon"><component :is="item.icon" /></el-icon>
+          <span class="app-sidebar__label">{{ item.label }}</span>
         </button>
-        <button class="app-sidebar__logout" @click="$emit('logout')">
-          <el-icon><SwitchButton /></el-icon>
-          <span>退出登录</span>
-        </button>
+      </nav>
+
+      <div class="app-sidebar__footer">
+        <div class="app-sidebar__user">
+          <div class="app-sidebar__avatar">{{ userAvatar }}</div>
+          <div class="app-sidebar__user-info">
+            <p class="app-sidebar__name">{{ displayUsername }}</p>
+            <p v-if="userPosition" class="app-sidebar__meta">{{ userPosition }}</p>
+          </div>
+        </div>
+
+        <div class="app-sidebar__actions">
+          <button class="app-sidebar__settings" type="button" @click="$emit('openSettings')">
+            <el-icon><Setting /></el-icon>
+            <span>系统偏好</span>
+          </button>
+          <button class="app-sidebar__logout" type="button" @click="$emit('logout')">
+            <el-icon><SwitchButton /></el-icon>
+            <span>退出登录</span>
+          </button>
+        </div>
       </div>
     </div>
   </aside>
@@ -55,8 +59,7 @@ defineProps({
   collapsed: Boolean,
   menuItems: { type: Array, default: () => [] },
   activeKey: { type: String, default: '' },
-  username: { type: String, default: 'User' },
-  displayUsername: { type: String, default: 'User' },
+  displayUsername: { type: String, default: '用户' },
   userPosition: { type: String, default: '' },
   userAvatar: { type: String, default: 'U' }
 })
@@ -70,59 +73,79 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
   min-width: var(--app-sidebar-width);
   height: 100%;
   display: flex;
-  flex-direction: column;
-  padding: var(--app-space-4);
+  padding: 0;
   border-radius: var(--app-radius-2xl);
-  background: var(--app-panel-bg);
-  border: 1px solid var(--app-panel-border);
-  box-shadow: var(--app-panel-shadow);
+  background: var(--app-sidebar-bg);
+  border: 1px solid var(--app-color-border-soft);
+  box-shadow: none;
+  backdrop-filter: blur(18px);
   overflow: hidden;
-  transition: width 0.3s ease, min-width 0.3s ease, padding 0.3s ease;
+  transition: width 0.3s ease, min-width 0.3s ease;
 }
 
-.app-sidebar--collapsed {
-  width: var(--app-sidebar-collapsed);
-  min-width: var(--app-sidebar-collapsed);
+.app-sidebar__shell {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
 }
 
 .app-sidebar__brand {
   display: flex;
   align-items: center;
   gap: var(--app-space-3);
-  min-height: 72px;
-  padding: var(--app-space-2) var(--app-space-2) var(--app-space-4);
+  padding: var(--app-space-2) var(--app-space-2) var(--app-space-3);
+  min-height: 60px;
 }
 
-.app-sidebar__logo {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--app-radius-md);
+.app-sidebar__mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
   display: grid;
   place-items: center;
   color: #fff;
+  font-size: 13px;
   font-weight: 800;
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, var(--app-color-primary), var(--app-color-primary-strong));
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.2);
+  flex-shrink: 0;
 }
 
-.app-sidebar__brand-text h2 {
-  font-size: 16px;
-  font-weight: 800;
+.app-sidebar__brand-copy {
+  min-width: 0;
+}
+
+.app-sidebar__eyebrow {
+  margin: 0 0 3px;
+  color: var(--app-color-text-muted);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+}
+
+.app-sidebar__brand-copy h2 {
   margin: 0;
   color: var(--app-color-text-strong);
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: var(--app-type-weight-bold);
 }
 
-.app-sidebar__brand-text p {
-  margin: 2px 0 0;
-  font-size: 12px;
+.app-sidebar__brand-copy p:last-child {
+  margin: 4px 0 0;
   color: var(--app-color-text-muted);
+  font-size: 11px;
+  line-height: 1.5;
 }
 
-.app-sidebar__brand-text,
+.app-sidebar__brand-copy,
 .app-sidebar__label,
+.app-sidebar__collapse-label,
 .app-sidebar__settings span,
 .app-sidebar__logout span,
 .app-sidebar__user-info {
-  max-width: 220px;
+  max-width: 190px;
   overflow: hidden;
   white-space: nowrap;
   transition: opacity 0.24s ease, transform 0.24s ease, max-width 0.3s ease;
@@ -134,21 +157,28 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
 .app-sidebar__logout {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   border-radius: var(--app-radius-md);
-  padding: 12px 14px;
+  padding: 9px 10px;
   color: var(--app-color-text-soft);
   background: transparent;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .app-sidebar__collapse:hover,
 .app-sidebar__item:hover,
 .app-sidebar__settings:hover,
 .app-sidebar__logout:hover {
-  background: var(--app-color-primary-soft);
-  color: var(--app-color-primary-strong);
+  background: var(--app-sidebar-hover-bg);
+  color: var(--app-color-text-strong);
+}
+
+.app-sidebar__collapse {
+  justify-content: space-between;
+  margin-bottom: var(--app-space-3);
+  border: 1px solid var(--app-color-border-soft);
+  background: var(--app-sidebar-soft-bg);
 }
 
 .app-sidebar__nav {
@@ -162,8 +192,8 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
 }
 
 .app-sidebar__item--active {
-  background: var(--app-color-primary-soft);
-  color: var(--app-color-primary-strong);
+  background: var(--app-sidebar-active-bg);
+  color: var(--app-color-text-strong);
   font-weight: 700;
 }
 
@@ -172,24 +202,24 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
   flex-direction: column;
   gap: var(--app-space-3);
   padding-top: var(--app-space-4);
-  border-top: 1px solid var(--app-panel-border);
+  border-top: 1px solid var(--app-color-border-soft);
 }
 
 .app-sidebar__user {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
+  gap: 10px;
+  padding: 9px 10px;
   border-radius: var(--app-radius-lg);
-  background: var(--app-panel-bg-soft);
-  border: 1px solid var(--app-panel-border);
+  background: var(--app-sidebar-soft-bg);
+  border: 1px solid var(--app-color-border-soft);
 }
 
 .app-sidebar__avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #2563eb, #4f46e5);
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--app-color-primary), #60a5fa);
   color: #fff;
   font-weight: 800;
   display: grid;
@@ -197,20 +227,16 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
   flex-shrink: 0;
 }
 
-.app-sidebar__user-info {
-  min-width: 0;
-}
-
 .app-sidebar__name {
   margin: 0;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--app-color-text-strong);
 }
 
 .app-sidebar__meta {
   margin: 2px 0 0;
-  font-size: 12px;
+  font-size: 10px;
   color: var(--app-color-text-muted);
 }
 
@@ -222,11 +248,25 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
 .app-sidebar__settings,
 .app-sidebar__logout {
   justify-content: flex-start;
-  padding: 10px 12px;
+  padding: 8px 10px;
 }
 
-.app-sidebar--collapsed .app-sidebar__brand-text,
+.app-sidebar--collapsed {
+  width: var(--app-sidebar-collapsed);
+  min-width: var(--app-sidebar-collapsed);
+}
+
+.app-sidebar--collapsed .app-sidebar__shell {
+  padding-inline: var(--app-space-3);
+}
+
+.app-sidebar--collapsed .app-sidebar__brand {
+  justify-content: center;
+}
+
+.app-sidebar--collapsed .app-sidebar__brand-copy,
 .app-sidebar--collapsed .app-sidebar__label,
+.app-sidebar--collapsed .app-sidebar__collapse-label,
 .app-sidebar--collapsed .app-sidebar__settings span,
 .app-sidebar--collapsed .app-sidebar__logout span,
 .app-sidebar--collapsed .app-sidebar__user-info {
@@ -235,7 +275,6 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
   transform: translateX(-8px);
 }
 
-.app-sidebar--collapsed .app-sidebar__brand,
 .app-sidebar--collapsed .app-sidebar__collapse,
 .app-sidebar--collapsed .app-sidebar__item,
 .app-sidebar--collapsed .app-sidebar__settings,
@@ -243,11 +282,19 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
   justify-content: center;
 }
 
+.app-sidebar--collapsed .app-sidebar__collapse {
+  padding-inline: 10px;
+}
+
 @media (max-width: 1200px) {
   .app-sidebar,
   .app-sidebar--collapsed {
     width: 100%;
     min-width: 0;
+  }
+
+  .app-sidebar__shell {
+    padding: var(--app-space-3);
   }
 }
 </style>

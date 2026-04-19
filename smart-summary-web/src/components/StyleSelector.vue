@@ -1,17 +1,19 @@
-﻿<template>
-  <div class="style-selector">
-    <label class="style-selector__label">{{ label }}</label>
-    <div class="style-selector__container">
+<template>
+  <div :class="['style-selector', compact && 'style-selector--compact']">
+    <div v-if="!compact" class="style-selector__label">{{ label }}</div>
+
+    <div class="style-selector__rail">
       <button
         v-for="option in options"
         :key="option.value"
-        :class="['style-selector__btn', { active: modelValue === option.value }]"
+        type="button"
+        :class="['style-selector__chip', { active: modelValue === option.value }]"
         @click="handleClick(option.value)"
       >
-        <el-icon class="style-selector__icon">
+        <el-icon v-if="option.icon" class="style-selector__icon">
           <component :is="option.icon" />
         </el-icon>
-        <span class="style-selector__text">{{ option.label }}</span>
+        <span>{{ option.label }}</span>
       </button>
     </div>
   </div>
@@ -27,7 +29,11 @@ defineProps({
   },
   label: {
     type: String,
-    default: 'SELECT STYLE / 选择汇报风格'
+    default: '风格'
+  },
+  compact: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -42,53 +48,69 @@ const handleClick = (value) => {
 <style scoped>
 .style-selector {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .style-selector__label {
+  color: var(--app-color-text-muted);
   font-size: 12px;
   font-weight: 700;
-  color: #64748b;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.style-selector__container {
+.style-selector__rail {
   display: inline-flex;
+  align-items: center;
   gap: 6px;
   padding: 6px;
-  background: rgba(248, 250, 252, 0.9);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  border-radius: 18px;
+  border-radius: 999px;
+  background: rgba(248, 250, 252, 0.95);
+  border: 1px solid rgba(226, 232, 240, 0.92);
 }
 
-.style-selector__btn {
+.style-selector__chip {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 14px;
-  border-radius: 14px;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 999px;
   background: transparent;
-  color: #64748b;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  color: var(--app-color-text-muted);
   font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+  white-space: nowrap;
 }
 
-.style-selector__btn:hover:not(.active) {
-  background: rgba(255, 255, 255, 0.72);
-  color: #0f172a;
+.style-selector__chip:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--app-color-text);
+  transform: translateY(-1px);
 }
 
-.style-selector__btn.active {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.14), rgba(99, 102, 241, 0.1));
-  color: #1d4ed8;
-  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.12);
+.style-selector__chip.active {
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--app-color-primary);
 }
 
 .style-selector__icon {
   font-size: 16px;
+}
+
+.style-selector--compact {
+  gap: 8px;
+}
+
+.style-selector--compact .style-selector__rail {
+  padding: 4px;
+}
+
+.style-selector--compact .style-selector__chip {
+  padding: 7px 10px;
+  font-size: 12px;
 }
 </style>

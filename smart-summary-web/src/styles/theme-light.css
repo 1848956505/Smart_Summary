@@ -1,9 +1,27 @@
-﻿:root,
 .theme-light {
-  --app-page-bg: linear-gradient(180deg, #f6f8fc 0%, #eef2f8 100%);
-  --app-panel-bg: var(--app-color-bg-elevated);
-  --app-panel-bg-soft: var(--app-color-bg-soft);
-  --app-panel-border: var(--app-color-border);
-  --app-panel-shadow: var(--app-shadow-md);
-  --app-navbar-bg: rgba(255, 255, 255, 0.96);
+  --app-color-bg-base: #f4f7fb;
+  --app-color-bg-shell: #f7faff;
+  --app-color-bg-panel: rgba(255, 255, 255, 0.9);
+  --app-color-border-soft: rgba(84, 112, 161, 0.12);
+  --app-page-bg: linear-gradient(180deg, #f8fbff 0%, #eff5fd 100%);
+  --app-panel-bg: var(--app-color-bg-panel);
+  --app-panel-bg-soft: rgba(248, 251, 255, 0.94);
+  --app-panel-border: var(--app-color-border-soft);
+  --app-panel-shadow: var(--app-shadow-shell);
+  --app-navbar-bg: rgba(255, 255, 255, 0.88);
+  --app-shell-main-bg: rgba(255, 255, 255, 0.24);
+  --app-shell-main-border: rgba(84, 112, 161, 0.1);
+  --app-sidebar-bg: rgba(255, 255, 255, 0.78);
+  --app-sidebar-soft-bg: rgba(255, 255, 255, 0.74);
+  --app-sidebar-hover-bg: rgba(59, 130, 246, 0.08);
+  --app-sidebar-active-bg: rgba(59, 130, 246, 0.1);
+  --memo-surface-strong: rgba(255, 255, 255, 0.96);
+  --memo-surface-soft: rgba(248, 251, 255, 0.94);
+  --memo-surface-muted: rgba(255, 255, 255, 0.82);
+  --memo-border: rgba(84, 112, 161, 0.12);
+  --memo-border-strong: rgba(59, 130, 246, 0.22);
+  --memo-accent-bg: rgba(232, 241, 255, 0.92);
+  --memo-accent-bg-strong: rgba(59, 130, 246, 0.12);
+  --memo-line: rgba(96, 134, 196, 0.24);
+  --memo-line-soft: rgba(84, 112, 161, 0.16);
 }

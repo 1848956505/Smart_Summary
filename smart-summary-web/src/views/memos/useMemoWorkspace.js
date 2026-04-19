@@ -5,6 +5,13 @@ import axios from 'axios'
 import html2pdf from 'html2pdf.js'
 import { buildWeekDayItems, formatLocalDate, getDefaultWeekDate, getDefaultWeekRange } from './memoDateUtils'
 
+const today = () => formatLocalDate(new Date())
+
+const includesDate = (weekRecord, date) => {
+  if (!weekRecord?.weekStartDate || !weekRecord?.weekEndDate || !date) return false
+  return weekRecord.weekStartDate <= date && weekRecord.weekEndDate >= date
+}
+
 export function useMemoWorkspace() {
   const folders = ref([])
   const weeksByFolder = reactive({})
@@ -91,10 +98,10 @@ export function useMemoWorkspace() {
     const shell = recordsShellRef.value
     const target = document.getElementById(`memo-day-${date}`)
     if (!shell || !target) return
-    const shellRect = shell.getBoundingClientRect()
-    const targetRect = target.getBoundingClientRect()
-    const top = shell.scrollTop + (targetRect.top - shellRect.top)
-    shell.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' })
+    requestAnimationFrame(() => {
+      const top = Math.max(target.offsetTop - 8, 0)
+      shell.scrollTo({ top, behavior: 'smooth' })
+    })
   }
 
   const handleSelectDate = async (date) => {
@@ -130,6 +137,16 @@ export function useMemoWorkspace() {
 
       for (const folder of folders.value) {
         await loadWeeks(folder.id)
+      }
+
+      const currentDate = today()
+      for (const folder of folders.value) {
+        const weeks = weeksByFolder[folder.id] || []
+        const currentWeekMatch = weeks.find((week) => includesDate(week, currentDate))
+        if (currentWeekMatch) {
+          await handleSelectWeek(currentWeekMatch)
+          return
+        }
       }
 
       const storedWeekId = Number(localStorage.getItem('memo_selected_week_id') || 0)

@@ -1,10 +1,9 @@
-﻿<template>
-  <div class="app-layout" :class="themeClass">
+<template>
+  <div class="app-layout" :class="[themeClass, { 'app-layout--stacked': isStackedLayout }]">
     <AppSidebar
       :collapsed="sidebarCollapsed"
       :active-key="activeKey"
       :menu-items="menuItems"
-      :username="username"
       :display-username="displayUsername"
       :user-position="userPosition"
       :user-avatar="userAvatar"
@@ -12,10 +11,10 @@
       @select="handleSelect"
       @logout="handleLogout"
       @open-settings="openSettings"
-    /> 
+    />
 
     <div class="app-layout__main">
-      <AppContent>
+      <AppContent :content-width="contentWidth" :full-bleed="isFullBleed">
         <router-view />
       </AppContent>
     </div>
@@ -23,35 +22,60 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AppSidebar from './AppSidebar.vue'
 import AppContent from './AppContent.vue'
 import { appMenu } from '@/constants/menu'
 import { appRoutes } from '@/constants/routes'
+import { themeNames } from '@/constants/theme'
 
 const router = useRouter()
 const route = useRoute()
 const sidebarCollapsed = ref(false)
+const themeState = inject('theme', null)
+const userState = inject('userInfo', null)
+
+const getStoredUser = () => {
+  try {
+    const userStr = localStorage.getItem('user')
+    return userStr ? JSON.parse(userStr) : null
+  } catch {
+    return null
+  }
+}
+
+const getStoredTheme = () => {
+  try {
+    return localStorage.getItem('theme') || 'light'
+  } catch {
+    return 'light'
+  }
+}
+
+const normalizeThemeClass = (themeValue) => {
+  const value = String(themeValue || '').trim()
+  if (!value || value === 'light' || value === themeNames.light) return themeNames.light
+  if (value === 'dark' || value === themeNames.dark) return themeNames.dark
+  return value.startsWith('theme-') ? value : themeNames.light
+}
 
 const user = computed(() => {
-  const userStr = localStorage.getItem('user')
-  return userStr ? JSON.parse(userStr) : null
+  const injectedUser = userState?.userInfo
+  if (injectedUser && (injectedUser.username || injectedUser.id || injectedUser.token)) {
+    return injectedUser
+  }
+  return getStoredUser()
 })
 
-const username = computed(() => user.value?.username || 'User')
-const displayUsername = computed(() => user.value?.username || 'User')
-const userPosition = ref('企业协作空间')
-const userAvatar = computed(() => (username.value || 'U').slice(0, 1).toUpperCase())
+const displayUsername = computed(() => user.value?.username || '用户')
+const userPosition = computed(() => user.value?.position || user.value?.role || '企业协作空间')
+const userAvatar = computed(() => displayUsername.value.slice(0, 1).toUpperCase())
 
-const activeKey = computed(() => {
-  if (route.path.startsWith('/app/generate')) return 'generate'
-  if (route.path.startsWith('/app/memos')) return 'memos'
-  if (route.path.startsWith('/app/history')) return 'history'
-  if (route.path.startsWith('/app/settings')) return 'settings'
-  return 'dashboard'
-})
-
+const activeKey = computed(() => route.meta?.navKey || 'dashboard')
+const isStackedLayout = computed(() => Boolean(route.meta?.fullBleed))
+const contentWidth = computed(() => route.meta?.contentWidth || 'standard')
+const isFullBleed = computed(() => Boolean(route.meta?.fullBleed))
 const menuItems = appMenu
 
 const handleSelect = (key) => {
@@ -68,29 +92,45 @@ const openSettings = () => {
   router.push(appRoutes.settings)
 }
 
-const themeClass = computed(() => 'theme-light')
+const themeClass = computed(() => normalizeThemeClass(themeState?.currentTheme?.style || getStoredTheme()))
 </script>
 
 <style scoped>
 .app-layout {
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
   display: flex;
-  gap: var(--app-space-4);
-  padding: var(--app-space-4);
-  overflow: hidden;
+  gap: var(--app-space-5);
+  padding: var(--app-shell-gutter);
+  overflow: visible;
+  background: var(--app-page-bg);
 }
 
 .app-layout__main {
   flex: 1;
   min-width: 0;
-  min-height: 0;
+  min-height: calc(100vh - (var(--app-shell-gutter) * 2));
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
   border-radius: var(--app-radius-2xl);
-  background: var(--app-panel-bg);
-  border: 1px solid var(--app-panel-border);
-  box-shadow: var(--app-panel-shadow);
+  background: rgba(255, 255, 255, 0.24);
+  border: 1px solid rgba(84, 112, 161, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+@media (max-width: 1200px) {
+  .app-layout {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .app-layout--stacked {
+    gap: var(--app-space-4);
+  }
+
+  .app-layout__main {
+    width: 100%;
+  }
 }
 </style>

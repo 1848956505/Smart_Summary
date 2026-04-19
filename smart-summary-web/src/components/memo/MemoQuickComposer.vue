@@ -1,16 +1,18 @@
 <template>
   <section class="memo-composer app-surface">
-    <div class="memo-composer__top">
+    <div class="memo-composer__context">
       <div class="memo-composer__date">
         <span class="memo-composer__date-label">当前录入日期</span>
-        <button type="button" class="memo-composer__date-chip" @click="$emit('jump-today')" :title="activeDate">
+        <button type="button" class="memo-chip memo-chip--content memo-composer__date-chip" :title="activeDate" @click="$emit('jump-today')">
           <el-icon><Calendar /></el-icon>
           <span>{{ activeDate || '未选择' }}</span>
         </button>
       </div>
+
+      <button type="button" class="memo-button memo-button--ghost memo-composer__detail-link" @click="$emit('open-detail')">打开详细录入</button>
     </div>
 
-    <div class="memo-composer__input">
+    <div class="memo-composer__field">
       <textarea
         ref="textareaRef"
         :value="modelValue"
@@ -21,14 +23,15 @@
         @keydown.enter.exact.prevent="handleSubmit"
         @keydown.enter.shift.stop
       />
-      <el-button class="memo-composer__submit" type="primary" :disabled="!trimmedValue" @click="handleSubmit">
+
+      <button class="memo-button memo-button--primary memo-button--icon memo-composer__submit" type="button" :disabled="!trimmedValue" @click="handleSubmit">
         <el-icon><Promotion /></el-icon>
-      </el-button>
+      </button>
     </div>
 
-    <div class="memo-composer__footer">
-      <span>Enter 保存，Shift+Enter 换行</span>
-      <button type="button" class="memo-composer__footer-link" @click="$emit('open-detail')">打开详细录入</button>
+    <div class="memo-composer__meta">
+      <span>回车保存，Shift + 回车换行</span>
+      <span>随手记下这一刻的工作碎片</span>
     </div>
   </section>
 </template>
@@ -77,16 +80,23 @@ watch(
 
 <style scoped>
 .memo-composer {
-  padding: 16px 18px 14px;
+  padding: 14px 18px;
   border-radius: 24px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--memo-border);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--memo-shadow-soft);
 }
 
-.memo-composer__top {
+.memo-composer:focus-within {
+  border-color: var(--memo-border-strong);
+  box-shadow: var(--memo-selected-shadow);
+}
+
+.memo-composer__context {
   display: flex;
   justify-content: space-between;
   gap: 12px;
@@ -96,48 +106,43 @@ watch(
 
 .memo-composer__date {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .memo-composer__date-label {
   font-size: 12px;
   color: var(--app-color-text-muted);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
 }
 
 .memo-composer__date-chip {
-  display: inline-flex;
-  align-items: center;
   gap: 6px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: var(--app-color-primary-soft);
-  color: var(--app-color-primary-strong);
-  font-size: 12px;
-  font-weight: 700;
-  border: 0;
 }
 
-.memo-composer__input {
+.memo-composer__detail-link {
+  min-width: 112px;
+}
+
+.memo-composer__field {
   display: flex;
   align-items: flex-end;
   gap: 10px;
-  padding: 2px 0;
 }
 
 .memo-composer__textarea {
   flex: 1;
-  min-height: 54px;
+  min-height: 52px;
   max-height: 180px;
   resize: none;
   border: 0;
   outline: none;
   background: transparent;
   color: var(--app-color-text);
-  line-height: 1.7;
+  line-height: 1.8;
   font-size: 15px;
-  padding: 10px 2px;
+  padding: 8px 2px;
 }
 
 .memo-composer__textarea::placeholder {
@@ -145,39 +150,33 @@ watch(
 }
 
 .memo-composer__submit {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.18);
+  box-shadow: var(--memo-button-primary-shadow);
 }
 
-.memo-composer__footer {
+.memo-composer__meta {
   display: flex;
   justify-content: space-between;
   gap: 12px;
   align-items: center;
   padding-top: 10px;
-  border-top: 1px solid rgba(226, 232, 240, 0.65);
+  border-top: 1px solid var(--memo-line-soft);
   font-size: 11px;
   color: var(--app-color-text-muted);
-}
-
-.memo-composer__footer-link {
-  border: 0;
-  background: transparent;
-  color: var(--app-color-primary);
-  font-size: 11px;
-  font-weight: 700;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 860px) {
-  .memo-composer__input {
+  .memo-composer__field {
     align-items: stretch;
   }
 
   .memo-composer__submit {
     align-self: flex-end;
+  }
+
+  .memo-composer__meta {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 </style>

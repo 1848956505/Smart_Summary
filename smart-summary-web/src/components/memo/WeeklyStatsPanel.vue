@@ -1,11 +1,11 @@
-﻿<template>
+<template>
   <section class="stats-panel app-surface">
     <div class="stats-panel__header">
       <div>
-        <p class="stats-panel__eyebrow">Overview</p>
+        <p class="stats-panel__eyebrow">概览</p>
         <h3>本周统计</h3>
       </div>
-      <span class="stats-panel__chip">{{ totalCount }} 条碎片</span>
+      <span class="memo-chip memo-chip--accent stats-panel__chip">{{ totalCount }} 条碎片</span>
     </div>
 
     <div class="stats-panel__section">
@@ -23,7 +23,7 @@
       <p class="stats-panel__label">标签分布</p>
       <div class="stats-panel__tags">
         <div v-for="item in tagRows" :key="item.key" class="stats-panel__tag">
-          <span>{{ item.label }}</span>
+          <span class="memo-chip memo-chip--content">{{ item.label }}</span>
           <b>{{ item.value }}</b>
         </div>
       </div>
@@ -69,7 +69,7 @@ const tagRows = computed(() => {
   return Object.entries(counter)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 6)
-    .map(([key, value]) => ({ key, label: key, value, percent: Math.round((value / total.value) * 100) }))
+    .map(([key, value]) => ({ key, label: key, value }))
 })
 </script>
 
@@ -102,15 +102,6 @@ const tagRows = computed(() => {
   font-size: 18px;
   font-weight: 800;
   color: var(--app-color-text-strong);
-}
-
-.stats-panel__chip {
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: var(--app-color-primary-soft);
-  color: var(--app-color-primary-strong);
-  font-size: 12px;
-  font-weight: 700;
 }
 
 .stats-panel__section {
@@ -166,19 +157,15 @@ const tagRows = computed(() => {
 }
 
 .stats-panel__tag {
-  min-width: 96px;
+  min-width: 92px;
   padding: 10px 12px;
   border-radius: 16px;
   background: #fff;
   border: 1px solid var(--app-color-border);
   display: flex;
   flex-direction: column;
-  gap: 4px;
-}
-
-.stats-panel__tag span {
-  font-size: 12px;
-  color: var(--app-color-text-muted);
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .stats-panel__tag b {

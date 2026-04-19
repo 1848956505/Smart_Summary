@@ -42,12 +42,7 @@ provide('theme', { currentTheme, setTheme })
 
 <style scoped>
 .app-scale-shell {
-  --app-view-scale: 0.8;
-  width: calc(100% / var(--app-view-scale));
-  height: calc(100% / var(--app-view-scale));
-  min-width: calc(100% / var(--app-view-scale));
-  min-height: calc(100% / var(--app-view-scale));
-  transform: scale(var(--app-view-scale));
-  transform-origin: top left;
+  width: 100%;
+  min-height: 100%;
 }
 </style>

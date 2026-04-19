@@ -6,6 +6,7 @@
     width="760px"
     class="memo-dialog"
     :append-to-body="true"
+    align-center
   >
     <el-form :model="form" label-position="top" class="memo-dialog__form">
       <div class="memo-dialog__grid">
@@ -115,9 +116,6 @@ const handleSubmit = () => {
 </script>
 
 <style scoped>
-.memo-dialog__form {
-  padding-top: 6px;
-}
 .memo-dialog__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

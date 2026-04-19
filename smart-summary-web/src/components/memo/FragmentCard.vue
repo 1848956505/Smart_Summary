@@ -3,9 +3,9 @@
     <div class="fragment-card__main">
       <div class="fragment-card__topline">
         <div class="fragment-card__meta">
-          <el-tag size="small" :type="statusType" effect="light">{{ statusLabel }}</el-tag>
-          <el-tag size="small" effect="plain">{{ fragment.tag || '未分类' }}</el-tag>
-          <el-tag size="small" effect="plain">{{ priorityLabel }}</el-tag>
+          <span :class="['memo-chip', 'memo-chip--state', statusChipClass]">{{ statusLabel }}</span>
+          <span class="memo-chip memo-chip--content">{{ fragment.tag || '未分类' }}</span>
+          <span class="memo-chip memo-chip--soft">{{ priorityLabel }}</span>
         </div>
         <span class="fragment-card__date">{{ displayDate }}</span>
       </div>
@@ -15,18 +15,18 @@
     </div>
 
     <div class="fragment-card__actions">
-      <el-button size="small" text @click="$emit('edit', fragment)" title="编辑">
+      <button class="memo-button memo-button--ghost memo-button--icon" type="button" title="编辑" @click="$emit('edit', fragment)">
         <el-icon><EditPen /></el-icon>
-      </el-button>
-      <el-button size="small" text :disabled="!canMoveUp" @click="$emit('move-up', fragment)" title="上移">
+      </button>
+      <button class="memo-button memo-button--ghost memo-button--icon" type="button" title="上移" :disabled="!canMoveUp" @click="$emit('move-up', fragment)">
         <el-icon><Top /></el-icon>
-      </el-button>
-      <el-button size="small" text :disabled="!canMoveDown" @click="$emit('move-down', fragment)" title="下移">
+      </button>
+      <button class="memo-button memo-button--ghost memo-button--icon" type="button" title="下移" :disabled="!canMoveDown" @click="$emit('move-down', fragment)">
         <el-icon><Bottom /></el-icon>
-      </el-button>
-      <el-button size="small" text type="danger" @click="$emit('delete', fragment.id)" title="删除">
+      </button>
+      <button class="memo-button memo-button--ghost memo-button--icon fragment-card__danger" type="button" title="删除" @click="$emit('delete', fragment.id)">
         <el-icon><Delete /></el-icon>
-      </el-button>
+      </button>
     </div>
   </article>
 </template>
@@ -48,9 +48,9 @@ const statusLabel = computed(() => {
   return map[props.fragment.status] || '待办'
 })
 
-const statusType = computed(() => {
-  const map = { todo: 'info', doing: 'warning', done: 'success', blocked: 'danger' }
-  return map[props.fragment.status] || 'info'
+const statusChipClass = computed(() => {
+  const map = { todo: 'memo-chip--info', doing: 'memo-chip--warning', done: 'memo-chip--success', blocked: 'memo-chip--danger' }
+  return map[props.fragment.status] || 'memo-chip--info'
 })
 
 const priorityLabel = computed(() => {
@@ -66,19 +66,19 @@ const displayDate = computed(() => (props.fragment.workDate || '').slice(0, 10))
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 12px;
-  padding: 16px 18px;
-  border-radius: var(--app-radius-xl);
-  background: #fff;
-  border: 1px solid var(--app-color-border);
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: 22px;
+  background: var(--memo-surface-strong);
+  border: 1px solid var(--memo-border);
+  box-shadow: var(--memo-shadow-soft);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .fragment-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.08);
-  border-color: rgba(37, 99, 235, 0.18);
+  box-shadow: var(--memo-shadow-strong);
+  border-color: var(--memo-border-strong);
 }
 
 .fragment-card__main {
@@ -87,7 +87,7 @@ const displayDate = computed(() => (props.fragment.workDate || '').slice(0, 10))
 
 .fragment-card__topline {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
 }
@@ -96,25 +96,29 @@ const displayDate = computed(() => (props.fragment.workDate || '').slice(0, 10))
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  align-items: center;
 }
 
 .fragment-card__date {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--app-color-text-muted);
   white-space: nowrap;
+  letter-spacing: 0.02em;
+  padding-top: 4px;
 }
 
 .fragment-card__title {
-  margin-top: 12px;
-  font-size: 15px;
+  margin-top: 14px;
+  font-size: 16px;
   font-weight: 800;
   color: var(--app-color-text-strong);
+  line-height: 1.45;
 }
 
 .fragment-card__text {
   margin-top: 8px;
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: 14px;
+  line-height: 1.8;
   color: var(--app-color-text-soft);
   white-space: pre-wrap;
 }
@@ -123,32 +127,34 @@ const displayDate = computed(() => (props.fragment.workDate || '').slice(0, 10))
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  margin-left: 2px;
-  opacity: 0.75;
+  margin-left: 4px;
+  opacity: 0.44;
+  transition: opacity 0.2s ease;
 }
 
-.fragment-card__actions:hover {
+.fragment-card:hover .fragment-card__actions,
+.fragment-card:focus-within .fragment-card__actions {
   opacity: 1;
 }
 
-.fragment-card__actions :deep(.el-button) {
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border-radius: 12px;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  background: rgba(248, 250, 252, 0.92);
-  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.04);
+.fragment-card__danger {
+  color: var(--app-color-danger);
 }
 
-.fragment-card__actions :deep(.el-button:hover) {
-  border-color: rgba(37, 99, 235, 0.2);
-  background: #fff;
+.fragment-card__danger:hover {
+  color: var(--app-color-danger);
+  border-color: rgba(209, 67, 67, 0.18);
+  background: rgba(255, 244, 244, 0.98);
 }
 
 @media (max-width: 820px) {
   .fragment-card {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fragment-card__topline {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .fragment-card__actions {
@@ -157,6 +163,7 @@ const displayDate = computed(() => (props.fragment.workDate || '').slice(0, 10))
     margin-left: 0;
     padding-top: 8px;
     flex-wrap: wrap;
+    opacity: 1;
   }
 }
 </style>

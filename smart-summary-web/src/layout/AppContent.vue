@@ -1,15 +1,51 @@
-﻿<template>
-  <main class="app-content">
-    <slot />
+<template>
+  <main class="app-content" :class="{ 'app-content--full-bleed': props.fullBleed }">
+    <div :class="contentFrameClass">
+      <slot />
+    </div>
   </main>
 </template>
+
+<script setup>
+import { computed } from 'vue'
+
+const props = defineProps({
+  contentWidth: {
+    type: String,
+    default: 'standard'
+  },
+  fullBleed: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const contentFrameClass = computed(() => [
+  'app-content__frame',
+  props.fullBleed ? 'app-content__frame--full-bleed' : `app-page-width--${props.contentWidth || 'standard'}`
+])
+</script>
 
 <style scoped>
 .app-content {
   flex: 1;
-  min-height: 0;
-  overflow: auto;
-  padding: var(--app-space-6);
-  background: linear-gradient(180deg, rgba(248, 250, 252, 0.72), rgba(241, 245, 249, 0.88));
+  min-width: 0;
+  min-height: 100%;
+  overflow: visible;
+  background: linear-gradient(180deg, rgba(248, 251, 255, 0.7), rgba(239, 245, 253, 0.94));
+}
+
+.app-content__frame {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--app-space-5);
+  box-sizing: border-box;
+}
+
+.app-content__frame--full-bleed {
+  padding-inline: var(--app-shell-gutter);
+  max-width: none;
 }
 </style>
