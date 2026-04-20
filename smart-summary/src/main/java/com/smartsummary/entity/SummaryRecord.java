@@ -1,7 +1,13 @@
 package com.smartsummary.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -18,17 +24,16 @@ public class SummaryRecord {
 
     private String summaryText;
 
-    private String style;  // 钉钉/飞书/企微
+    private String style;  // table/list
 
-    private String modelId;    // 模型名称
+    private String modelId;
 
-    private String apiKey;     // API密钥
+    private String apiKey;
 
-    private String baseUrl;   // 接口地址
+    private String baseUrl;
 
-    private Double temperature; // 生成随机性
-
-    private Integer maxTokens;  // 最大长度
+    private Double temperature;
+    private Integer maxTokens;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;

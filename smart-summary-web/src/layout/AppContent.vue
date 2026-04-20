@@ -30,16 +30,19 @@ const contentFrameClass = computed(() => [
 .app-content {
   flex: 1;
   min-width: 0;
-  min-height: 100%;
-  overflow: visible;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
   background: linear-gradient(180deg, rgba(248, 251, 255, 0.7), rgba(239, 245, 253, 0.94));
 }
 
 .app-content__frame {
   width: 100%;
   min-height: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  min-height: 0;
   padding-block: var(--app-space-5);
   box-sizing: border-box;
 }

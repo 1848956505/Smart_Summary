@@ -2,7 +2,7 @@
   <section class="week-header app-surface">
     <div class="week-header__identity">
       <div class="week-header__eyebrow-row">
-        <p class="week-header__eyebrow">周记录上下文</p>
+        <p class="week-header__eyebrow">CONTEXT</p>
         <span class="memo-chip memo-chip--state memo-chip--info week-header__status-chip">
           {{ currentWeek ? '已激活' : '未选择周记录' }}
         </span>

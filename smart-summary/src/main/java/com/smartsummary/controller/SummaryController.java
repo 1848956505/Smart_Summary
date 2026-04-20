@@ -7,7 +7,15 @@ import com.smartsummary.service.SummaryRecordService;
 import com.smartsummary.service.UserService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,13 +31,9 @@ public class SummaryController {
     private final SummaryRecordService summaryRecordService;
     private final UserService userService;
 
-    /**
-     * 生成工作总结
-     */
     @PostMapping("/generate")
     public Map<String, Object> generate(@RequestBody GenerateRequest request) {
         try {
-            // 获取用户配置
             LlmService.UserConfig userConfig = new LlmService.UserConfig();
             if (request.getUserId() != null) {
                 User user = userService.getById(request.getUserId());
@@ -42,17 +46,15 @@ public class SummaryController {
                 }
             }
 
-            // 调用大模型生成（使用用户配置）
-            String summary = llmService.generateSummary(request.getText(), request.getStyle(), userConfig);
+            String normalizedStyle = llmService.normalizeStyle(request.getStyle());
+            String summary = llmService.generateSummary(request.getText(), normalizedStyle, userConfig);
 
-            // 保存记录（包含模型参数）
             if (request.getUserId() != null) {
                 SummaryRecord record = new SummaryRecord();
                 record.setUserId(request.getUserId());
                 record.setOriginalText(request.getText());
                 record.setSummaryText(summary);
-                record.setStyle(request.getStyle());
-                // 保存模型参数
+                record.setStyle(normalizedStyle);
                 record.setModelId(userConfig.getModelId());
                 record.setApiKey(userConfig.getApiKey());
                 record.setBaseUrl(userConfig.getBaseUrl());
@@ -67,17 +69,11 @@ public class SummaryController {
         }
     }
 
-    /**
-     * 获取历史记录列表
-     */
     @GetMapping("/history")
     public Map<String, Object> getHistory(@RequestParam Long userId) {
         try {
             List<SummaryRecord> records = summaryRecordService.getUserHistory(userId);
-            // 返回时隐藏敏感信息
-            records.forEach(record -> {
-                record.setApiKey("***");
-            });
+            records.forEach(record -> record.setApiKey("***"));
             Map<String, Object> result = new HashMap<>();
             result.put("success", true);
             result.put("data", records);
@@ -87,9 +83,6 @@ public class SummaryController {
         }
     }
 
-    /**
-     * 获取单条历史记录详情
-     */
     @GetMapping("/history/{id}")
     public Map<String, Object> getHistoryDetail(@PathVariable Long id) {
         try {
@@ -97,7 +90,6 @@ public class SummaryController {
             if (record == null) {
                 return Map.of("success", false, "message", "记录不存在");
             }
-            // 隐藏敏感信息
             record.setApiKey("***");
             return Map.of("success", true, "data", record);
         } catch (Exception e) {
@@ -105,18 +97,14 @@ public class SummaryController {
         }
     }
 
-    /**
-     * 删除历史记录
-     */
     @DeleteMapping("/history/{id}")
     public Map<String, Object> deleteHistory(@PathVariable Long id) {
         try {
             boolean success = summaryRecordService.deleteRecord(id);
             if (success) {
                 return Map.of("success", true, "message", "删除成功");
-            } else {
-                return Map.of("success", false, "message", "删除失败");
             }
+            return Map.of("success", false, "message", "删除失败");
         } catch (Exception e) {
             return Map.of("success", false, "message", e.getMessage());
         }

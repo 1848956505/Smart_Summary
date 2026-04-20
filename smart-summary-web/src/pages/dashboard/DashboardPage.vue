@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="dashboard-page app-page-shell">
     <section class="dashboard-page__hero app-card">
       <div class="app-card__body dashboard-page__hero-body">
@@ -44,7 +44,7 @@
         <div v-if="records.length" class="dashboard-page__record-list">
           <button v-for="item in records.slice(0, 3)" :key="item.id" class="dashboard-page__record-item" @click="go('/app/history')">
             <div class="dashboard-page__record-main">
-              <strong>{{ item.style || 'dingtalk' }}</strong>
+              <strong>{{ getStyleLabel(item.style) }}</strong>
               <span>{{ truncate(item.summaryText, 80) }}</span>
             </div>
             <span class="dashboard-page__record-time">{{ formatTime(item.createTime) }}</span>
@@ -88,6 +88,7 @@ import { MagicStick, Notebook, Clock, Setting } from '@element-plus/icons-vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppCard from '@/components/ui/AppCard.vue'
 import AppEmpty from '@/components/ui/AppEmpty.vue'
+import { getStyleLabel } from '@/components/common/themeConfig'
 import { summaryService } from '@/services/summary.service'
 
 const router = useRouter()

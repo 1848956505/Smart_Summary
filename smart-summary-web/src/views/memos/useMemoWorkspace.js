@@ -12,6 +12,26 @@ const includesDate = (weekRecord, date) => {
   return weekRecord.weekStartDate <= date && weekRecord.weekEndDate >= date
 }
 
+const buildGenerateSourceText = (weekRecord, fragments) => {
+  const lines = []
+  const title = weekRecord?.title || '周记录'
+  const range = weekRecord ? `${weekRecord.weekStartDate} ~ ${weekRecord.weekEndDate}` : ''
+
+  lines.push(`周记录：${title}`)
+  if (range) lines.push(`周期：${range}`)
+  lines.push('', '碎片记录：')
+
+  for (const fragment of fragments || []) {
+    const date = fragment.workDate || ''
+    const tag = fragment.tag ? `【${fragment.tag}】` : ''
+    const titleText = fragment.title || '未命名事项'
+    const content = fragment.content ? ` - ${fragment.content}` : ''
+    lines.push(`- ${date} ${tag}${titleText}${content}`)
+  }
+
+  return lines.join('\n')
+}
+
 export function useMemoWorkspace() {
   const folders = ref([])
   const weeksByFolder = reactive({})
@@ -499,6 +519,9 @@ export function useMemoWorkspace() {
         source: 'memo-week',
         title: currentWeek.value?.title || '周报生成结果',
         summary: data.data.summary || '',
+        sourceText: buildGenerateSourceText(currentWeek.value, fragments.value),
+        fragmentCount: fragments.value.length,
+        sourceWeekRecordId: selectedWeekId.value,
         weekTitle: currentWeek.value?.title || '',
         weekRange: currentWeek.value ? `${currentWeek.value.weekStartDate} ~ ${currentWeek.value.weekEndDate}` : '',
         createdAt: new Date().toISOString()

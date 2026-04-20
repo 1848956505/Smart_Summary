@@ -2,7 +2,7 @@
   <aside class="memo-sidebar" :class="{ 'memo-sidebar--collapsed': collapsed }">
     <div class="memo-sidebar__top">
       <div v-if="!collapsed" class="memo-sidebar__brand">
-        <p class="memo-sidebar__eyebrow">碎片工作台</p>
+        <p class="memo-sidebar__eyebrow">WORKSPACE</p>
         <div class="memo-sidebar__title-row">
           <h3>碎片记录本</h3>
           <span class="memo-sidebar__count">{{ folders.length }} 个文件夹</span>
@@ -23,7 +23,7 @@
     </div>
 
     <div v-if="!collapsed" class="memo-sidebar__tree">
-      <div class="memo-sidebar__section-label">资料目录</div>
+      <div class="memo-sidebar__section-label">FOLDERS</div>
 
       <div v-for="folder in folders" :key="folder.id" class="folder-block">
         <div class="folder-row" :class="{ active: selectedFolderId === folder.id }">
