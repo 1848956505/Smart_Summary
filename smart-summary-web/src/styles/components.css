@@ -135,20 +135,20 @@
 }
 
 .memo-chip--success {
-  background: rgba(232, 250, 240, 0.96);
-  border-color: rgba(47, 133, 90, 0.18);
+  background: color-mix(in srgb, var(--app-color-success) 14%, var(--app-surface-elevated-max));
+  border-color: color-mix(in srgb, var(--app-color-success) 36%, transparent);
   color: var(--app-color-success);
 }
 
 .memo-chip--warning {
-  background: rgba(255, 247, 232, 0.98);
-  border-color: rgba(194, 122, 24, 0.16);
+  background: color-mix(in srgb, var(--app-color-warning) 14%, var(--app-surface-hover));
+  border-color: color-mix(in srgb, var(--app-color-warning) 34%, transparent);
   color: var(--app-color-warning);
 }
 
 .memo-chip--danger {
-  background: rgba(255, 239, 239, 0.98);
-  border-color: rgba(209, 67, 67, 0.16);
+  background: color-mix(in srgb, var(--app-color-danger) 12%, var(--app-surface-hover));
+  border-color: color-mix(in srgb, var(--app-color-danger) 30%, transparent);
   color: var(--app-color-danger);
 }
 
@@ -169,7 +169,7 @@
   font-size: var(--memo-button-font-size);
   font-weight: var(--memo-button-font-weight);
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-  box-shadow: 0 6px 14px rgba(39, 72, 124, 0.05);
+  box-shadow: var(--app-shadow-soft);
 }
 
 .memo-button:hover,
@@ -223,8 +223,8 @@
   gap: 6px;
   padding: 6px;
   border-radius: 999px;
-  background: rgba(248, 250, 252, 0.95);
-  border: 1px solid rgba(226, 232, 240, 0.92);
+  background: var(--app-surface-soft-alt);
+  border: 1px solid var(--app-border-default);
 }
 
 .app-segmented__option {
@@ -245,13 +245,13 @@
 }
 
 .app-segmented__option:hover:not(.is-active) {
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--app-surface-elevated-max);
   color: var(--app-color-text);
   transform: translateY(-1px);
 }
 
 .app-segmented__option.is-active {
-  background: rgba(37, 99, 235, 0.08);
+  background: var(--app-accent-soft);
   color: var(--app-color-primary);
 }
 

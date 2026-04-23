@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Theme palette and report style presets.
  */
 import { Grid, Tickets } from '@element-plus/icons-vue'
@@ -6,25 +6,25 @@ import { Grid, Tickets } from '@element-plus/icons-vue'
 export const themes = {
   list: {
     name: '列表风格',
-    primary: '#1d4ed8',
-    primaryGradient: 'linear-gradient(135deg, #1d4ed8, #60a5fa)',
-    background: 'rgba(29, 78, 216, 0.08)',
-    border: 'rgba(29, 78, 216, 0.18)',
-    shadow: 'rgba(29, 78, 216, 0.16)',
+    primary: '#4f46e5',
+    primaryGradient: 'linear-gradient(135deg, #4f46e5, #7c3aed)',
+    background: 'rgba(79, 70, 229, 0.1)',
+    border: 'rgba(79, 70, 229, 0.24)',
+    shadow: 'rgba(79, 70, 229, 0.2)',
     text: '#111827',
     textSecondary: '#475569',
-    accent: '#60a5fa'
+    accent: '#a855f7'
   },
   table: {
     name: '表格风格',
-    primary: '#2563eb',
-    primaryGradient: 'linear-gradient(135deg, #2563eb, #38bdf8)',
-    background: 'rgba(37, 99, 235, 0.1)',
-    border: 'rgba(37, 99, 235, 0.2)',
-    shadow: 'rgba(37, 99, 235, 0.2)',
+    primary: '#6366f1',
+    primaryGradient: 'linear-gradient(135deg, #6366f1, #9333ea)',
+    background: 'rgba(99, 102, 241, 0.1)',
+    border: 'rgba(99, 102, 241, 0.24)',
+    shadow: 'rgba(99, 102, 241, 0.2)',
     text: '#0f172a',
     textSecondary: '#475569',
-    accent: '#38bdf8'
+    accent: '#c084fc'
   }
 }
 

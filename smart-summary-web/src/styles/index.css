@@ -1,5 +1,6 @@
 ﻿@import './tokens.css';
 @import './theme-light.css';
+@import './theme-light-classic.css';
 @import './base.css';
 @import './components.css';
 @import './utilities.css';

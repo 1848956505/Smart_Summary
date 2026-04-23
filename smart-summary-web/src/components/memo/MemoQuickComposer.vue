@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <section class="memo-composer app-surface">
     <div class="memo-composer__context">
       <div class="memo-composer__date">
@@ -180,3 +180,4 @@ watch(
   }
 }
 </style>
+

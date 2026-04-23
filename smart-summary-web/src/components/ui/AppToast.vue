@@ -26,9 +26,9 @@ defineProps({
   padding: 12px 16px;
   border-radius: var(--app-radius-md);
   color: #fff;
-  box-shadow: var(--app-shadow-lg);
+  box-shadow: var(--app-shadow-soft-lg);
 }
-.app-toast--success { background: #16a34a; }
-.app-toast--error { background: #dc2626; }
-.app-toast--info { background: #2563eb; }
+.app-toast--success { background: var(--app-color-success); }
+.app-toast--error { background: var(--app-color-danger); }
+.app-toast--info { background: var(--app-color-primary-strong); }
 </style>

@@ -4,24 +4,49 @@
   box-sizing: border-box;
 }
 
+:root,
+.theme-light,
+.theme-dark {
+  --el-color-primary: var(--app-color-primary);
+  --el-color-primary-light-3: color-mix(in srgb, var(--app-color-primary) 75%, white);
+  --el-color-primary-light-5: color-mix(in srgb, var(--app-color-primary) 60%, white);
+  --el-color-primary-light-7: color-mix(in srgb, var(--app-color-primary) 35%, white);
+  --el-color-primary-light-8: color-mix(in srgb, var(--app-color-primary) 25%, white);
+  --el-color-primary-light-9: color-mix(in srgb, var(--app-color-primary) 15%, white);
+  --el-color-primary-dark-2: color-mix(in srgb, var(--app-color-primary) 75%, black);
+}
+
 body {
   font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #0f172a;
+  color: var(--app-color-text-strong);
   height: 100vh;
   overflow: hidden;
-  background:
-    radial-gradient(circle at top left, rgba(59, 130, 246, 0.15), transparent 30%),
-    radial-gradient(circle at bottom right, rgba(129, 140, 248, 0.14), transparent 30%),
-    linear-gradient(135deg, #f8fbff 0%, #eef4fb 48%, #f8fafc 100%);
+  background: var(--app-page-bg);
 }
 
 .el-button--primary {
-  --el-button-bg-color: #2563eb;
-  --el-button-border-color: #2563eb;
-  --el-button-hover-bg-color: #1d4ed8;
-  --el-button-hover-border-color: #1d4ed8;
+  --el-button-bg-color: transparent;
+  --el-button-border-color: transparent;
+  --el-button-hover-bg-color: transparent;
+  --el-button-hover-border-color: transparent;
+  --el-button-active-bg-color: transparent;
+  --el-button-active-border-color: transparent;
+  background-image: var(--app-gradient-primary);
+  border: none;
+  color: #fff;
+  box-shadow: var(--app-shadow-soft);
+}
+
+.el-button--primary:hover,
+.el-button--primary:focus-visible {
+  background-image: var(--app-gradient-primary-hover);
+  color: #fff;
+}
+
+.el-button--primary:active {
+  background-image: var(--app-gradient-primary-hover);
 }
 
 .el-radio-button__inner {
@@ -29,8 +54,8 @@ body {
 }
 
 .el-radio-button.is-active .el-radio-button__inner {
-  background-color: #2563eb;
-  border-color: #2563eb;
+  background-color: var(--app-color-primary);
+  border-color: var(--app-color-primary);
 }
 
 ::-webkit-scrollbar {
@@ -39,23 +64,23 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.06);
+  background: color-mix(in srgb, var(--app-color-text-strong) 6%, transparent);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(59, 130, 246, 0.32);
+  background: color-mix(in srgb, var(--app-color-primary) 32%, transparent);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(59, 130, 246, 0.5);
+  background: color-mix(in srgb, var(--app-color-primary) 50%, transparent);
 }
 
 .glass-surface {
-  background: rgba(255, 255, 255, 0.58);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: var(--app-panel-bg-soft);
+  border: 1px solid var(--app-panel-border);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+  box-shadow: var(--app-panel-shadow);
 }

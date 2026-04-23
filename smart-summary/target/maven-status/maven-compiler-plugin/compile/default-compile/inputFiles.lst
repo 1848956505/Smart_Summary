@@ -13,6 +13,7 @@ D:\A-Projects\Smart_Summary\smart-summary\src\main\java\com\smartsummary\reposit
 D:\A-Projects\Smart_Summary\smart-summary\src\main\java\com\smartsummary\service\SummaryRecordService.java
 D:\A-Projects\Smart_Summary\smart-summary\src\main\java\com\smartsummary\service\CurrentUserService.java
 D:\A-Projects\Smart_Summary\smart-summary\src\main\java\com\smartsummary\entity\User.java
+D:\A-Projects\Smart_Summary\smart-summary\src\main\java\com\smartsummary\controller\DashboardController.java
 D:\A-Projects\Smart_Summary\smart-summary\src\main\java\com\smartsummary\entity\MemoWeekRecord.java
 D:\A-Projects\Smart_Summary\smart-summary\src\main\java\com\smartsummary\config\SecurityConfig.java
 D:\A-Projects\Smart_Summary\smart-summary\src\main\java\com\smartsummary\controller\SettingsController.java

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <section class="week-header app-surface">
     <div class="week-header__identity">
       <div class="week-header__eyebrow-row">
@@ -174,3 +174,4 @@ defineEmits(['generate', 'save', 'copy', 'export-markdown', 'export-pdf', 'archi
   }
 }
 </style>
+

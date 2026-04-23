@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="history-page app-page-shell">
     <div class="history-page__toolbar app-surface">
       <div class="history-page__toolbar-copy">
@@ -261,7 +261,7 @@ onMounted(loadRecords)
   min-height: 32px;
   border-radius: 12px;
   box-shadow: none;
-  background: rgba(255, 255, 255, 0.96);
+  background: var(--app-surface-elevated-max);
   border: 1px solid var(--memo-button-border);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
@@ -269,7 +269,7 @@ onMounted(loadRecords)
 .history-page__control :deep(.el-select__wrapper.is-focused),
 .history-page__control :deep(.el-input__wrapper.is-focus) {
   border-color: var(--memo-border-strong);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
+  box-shadow: 0 0 0 3px var(--app-accent-soft);
 }
 
 .history-page__segmented {
@@ -297,7 +297,7 @@ onMounted(loadRecords)
 
 .history-page__rail {
   padding: 14px 14px 12px;
-  box-shadow: 0 12px 28px rgba(39, 72, 124, 0.05);
+  box-shadow: var(--app-shadow-soft-xl);
 }
 
 .history-page__rail-header {
@@ -420,7 +420,7 @@ onMounted(loadRecords)
   flex-wrap: wrap;
   padding: 10px 14px;
   border-radius: 18px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(246, 250, 255, 0.9));
+  background: linear-gradient(180deg, var(--app-surface-elevated-max), rgba(246, 250, 255, 0.9));
   border: 1px solid var(--memo-border);
   box-shadow: 0 10px 24px rgba(39, 72, 124, 0.05);
 }
@@ -459,7 +459,7 @@ onMounted(loadRecords)
   padding: 18px 20px;
   border-radius: 20px;
   border: 1px solid var(--memo-border);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 251, 255, 0.9));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), var(--app-surface-soft));
   box-shadow: 0 10px 24px rgba(39, 72, 124, 0.04);
 }
 
@@ -475,7 +475,7 @@ onMounted(loadRecords)
   gap: 8px;
   margin-bottom: 14px;
   padding-bottom: 10px;
-  border-bottom: 1px solid rgba(84, 112, 161, 0.1);
+  border-bottom: 1px solid var(--app-border-soft);
 }
 
 .history-page__plain,
@@ -529,7 +529,7 @@ onMounted(loadRecords)
 .history-page__report :deep(blockquote) {
   margin: 14px 0;
   padding: 12px 14px;
-  border-left: 3px solid rgba(59, 130, 246, 0.28);
+  border-left: 3px solid var(--app-accent-border-strong);
   border-radius: 0 14px 14px 0;
   background: rgba(243, 248, 255, 0.9);
   color: var(--app-color-text-soft);
@@ -548,7 +548,7 @@ onMounted(loadRecords)
   padding: 14px 16px;
   border-radius: 16px;
   background: rgba(245, 249, 255, 0.96);
-  border: 1px solid rgba(84, 112, 161, 0.1);
+  border: 1px solid var(--app-border-soft);
 }
 
 .history-page__report :deep(pre code) {
@@ -569,7 +569,7 @@ onMounted(loadRecords)
 
 .history-page__report :deep(th),
 .history-page__report :deep(td) {
-  border: 1px solid rgba(84, 112, 161, 0.14);
+  border: 1px solid var(--app-border-strong);
   padding: 11px 13px;
   text-align: left;
   vertical-align: top;
@@ -622,3 +622,4 @@ onMounted(loadRecords)
   }
 }
 </style>
+

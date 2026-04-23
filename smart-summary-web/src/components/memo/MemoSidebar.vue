@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <aside class="memo-sidebar" :class="{ 'memo-sidebar--collapsed': collapsed }">
     <div class="memo-sidebar__top">
       <div v-if="!collapsed" class="memo-sidebar__brand">
@@ -411,3 +411,4 @@ const statusLabel = (status) => {
   }
 }
 </style>
+

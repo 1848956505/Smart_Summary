@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="daily-list">
     <section
       v-for="day in weekDays"
@@ -315,7 +315,7 @@ function formatLocalDate(date) {
   border-radius: 50%;
   background: var(--app-color-primary);
   border: 3px solid var(--memo-surface-strong);
-  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.14);
+  box-shadow: 0 0 0 1px var(--app-accent-border);
   z-index: 1;
 }
 
@@ -353,3 +353,4 @@ function formatLocalDate(date) {
   }
 }
 </style>
+

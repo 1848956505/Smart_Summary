@@ -83,6 +83,7 @@ public class SettingsController {
     public Map<String, Object> testConnection(@RequestBody TestConnectionRequest request) {
         Map<String, Object> result = new HashMap<>();
         try {
+            long startedAt = System.currentTimeMillis();
             // 创建 HTTP 客户端
             OkHttpClient client = new OkHttpClient.Builder()
                     .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
@@ -99,18 +100,24 @@ public class SettingsController {
                     .build();
 
             try (Response response = client.newCall(httpRequest).execute()) {
+                long latencyMs = System.currentTimeMillis() - startedAt;
                 if (response.isSuccessful()) {
                     result.put("success", true);
                     result.put("message", "连接成功！模型服务正常运行。");
+                    result.put("status", "normal");
+                    result.put("latencyMs", latencyMs);
                 } else {
                     result.put("success", false);
                     result.put("message", "连接失败: HTTP " + response.code() + " " + response.message());
+                    result.put("status", "error");
+                    result.put("latencyMs", latencyMs);
                 }
             }
             return result;
         } catch (Exception e) {
             result.put("success", false);
             result.put("message", "连接失败: " + e.getMessage());
+            result.put("status", "error");
             return result;
         }
     }

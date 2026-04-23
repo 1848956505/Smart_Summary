@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="memo-workspace" :class="{ 'memo-workspace--rail-collapsed': sidebarCollapsed }">
     <aside class="memo-workspace__rail">
       <MemoSidebar
@@ -266,7 +266,7 @@ const {
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.72);
   border: 1px solid var(--memo-border);
-  box-shadow: 0 8px 20px rgba(39, 72, 124, 0.04);
+  box-shadow: var(--app-shadow-soft);
 }
 
 .memo-workspace__filters-label {
@@ -303,7 +303,7 @@ const {
   min-height: 30px;
   border-radius: 10px;
   box-shadow: none;
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--app-surface-elevated-strong);
   border: 1px solid var(--memo-button-border);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
@@ -311,7 +311,7 @@ const {
 .memo-workspace__control :deep(.el-select__wrapper.is-focused),
 .memo-workspace__control :deep(.el-input__wrapper.is-focus) {
   border-color: var(--memo-border-strong);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
+  box-shadow: 0 0 0 3px var(--app-accent-soft);
 }
 
 .memo-workspace__control :deep(.el-input__inner),
@@ -382,3 +382,4 @@ const {
   }
 }
 </style>
+

@@ -2,6 +2,7 @@
   <div class="generate-page app-page-shell">
     <header class="generate-page__topbar app-surface">
       <div class="generate-page__topbar-copy">
+        <p class="generate-page__topbar-kicker">GENERATE</p>
         <h2 class="app-title">智能生成工作台</h2>
       </div>
 
@@ -260,26 +261,40 @@ onMounted(() => {
 .generate-page__composer {
   border-radius: var(--app-radius-2xl);
   border: 1px solid var(--memo-border);
-  background: rgba(255, 255, 255, 0.86);
+  background: var(--app-surface-elevated);
 }
 
 .generate-page__topbar {
   width: min(880px, 100%);
   margin-inline: auto;
-  padding: 12px 16px;
+  padding: 10px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  box-shadow: 0 12px 28px rgba(39, 72, 124, 0.05);
+  gap: 12px;
+  box-shadow: var(--app-shadow-soft);
 }
 
 .generate-page__topbar-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   min-width: 0;
 }
 
+.generate-page__topbar-kicker {
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--app-color-text-muted);
+}
+
 .generate-page__topbar-copy :deep(.app-title) {
-  font-size: 20px;
+  font-size: var(--app-type-subheading-size);
+  font-weight: var(--app-type-weight-semibold);
+  letter-spacing: 0;
+  color: var(--app-color-text);
 }
 
 .generate-page__topbar-actions {
@@ -365,7 +380,7 @@ onMounted(() => {
   justify-content: space-between;
   gap: 14px;
   padding-bottom: 14px;
-  border-bottom: 1px solid rgba(84, 112, 161, 0.1);
+  border-bottom: 1px solid var(--app-border-soft);
 }
 
 .generate-page__result-title {
@@ -409,16 +424,16 @@ onMounted(() => {
 .generate-page__result-content :deep(blockquote) {
   margin: 14px 0;
   padding: 12px 14px;
-  border-left: 3px solid rgba(59, 130, 246, 0.28);
+  border-left: 3px solid var(--app-accent-border-strong);
   border-radius: 0 14px 14px 0;
-  background: rgba(243, 248, 255, 0.9);
+  background: var(--app-surface-soft);
   color: var(--app-color-text-soft);
 }
 
 .generate-page__result-content :deep(code) {
   padding: 2px 6px;
   border-radius: 8px;
-  background: rgba(236, 243, 255, 0.96);
+  background: var(--app-surface-elevated-max);
   color: var(--app-color-text-strong);
   font-size: 0.92em;
 }
@@ -427,8 +442,8 @@ onMounted(() => {
   overflow-x: auto;
   padding: 14px 16px;
   border-radius: 16px;
-  background: rgba(245, 249, 255, 0.96);
-  border: 1px solid rgba(84, 112, 161, 0.1);
+  background: var(--app-surface-elevated-max);
+  border: 1px solid var(--app-border-soft);
 }
 
 .generate-page__result-content :deep(pre code) {
@@ -444,12 +459,12 @@ onMounted(() => {
   background: #fff;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 12px 26px rgba(39, 72, 124, 0.06);
+  box-shadow: var(--app-shadow-soft-lg);
 }
 
 .generate-page__result-content :deep(th),
 .generate-page__result-content :deep(td) {
-  border: 1px solid rgba(84, 112, 161, 0.14);
+  border: 1px solid var(--app-border-strong);
   padding: 11px 13px;
   text-align: left;
   vertical-align: top;
@@ -457,13 +472,13 @@ onMounted(() => {
 }
 
 .generate-page__result-content :deep(th) {
-  background: linear-gradient(180deg, rgba(233, 242, 255, 0.95), rgba(226, 237, 255, 0.88));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--app-color-primary) 14%, var(--app-surface-elevated-max)), color-mix(in srgb, var(--app-color-primary) 10%, var(--app-surface-elevated)));
   color: var(--app-color-text-strong);
   font-weight: 700;
 }
 
 .generate-page__result-content :deep(tr:nth-child(even) td) {
-  background: rgba(248, 251, 255, 0.72);
+  background: color-mix(in srgb, var(--app-surface-soft) 78%, transparent);
 }
 
 .generate-page__empty {
@@ -501,7 +516,7 @@ onMounted(() => {
   width: min(900px, 100%);
   padding: 10px 12px 10px;
   border-radius: 28px;
-  box-shadow: 0 18px 38px rgba(39, 72, 124, 0.08);
+  box-shadow: var(--memo-shadow);
 }
 
 .generate-page__attachment {
@@ -511,8 +526,8 @@ onMounted(() => {
   padding: 12px 14px;
   margin-bottom: 12px;
   border-radius: 18px;
-  border: 1px solid rgba(59, 130, 246, 0.14);
-  background: linear-gradient(180deg, rgba(243, 248, 255, 0.96), rgba(236, 244, 255, 0.92));
+  border: 1px solid var(--app-accent-border);
+  background: linear-gradient(180deg, var(--app-surface-elevated-max), var(--app-surface-elevated-strong));
 }
 
 .generate-page__attachment-icon {
@@ -522,10 +537,10 @@ onMounted(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  background: var(--app-gradient-primary);
   color: #fff;
   font-size: 20px;
-  box-shadow: 0 10px 18px rgba(37, 99, 235, 0.18);
+  box-shadow: 0 10px 18px color-mix(in srgb, var(--app-color-primary) 28%, transparent);
 }
 
 .generate-page__attachment-copy {
@@ -551,7 +566,7 @@ onMounted(() => {
   height: 32px;
   border: 0;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.86);
+  background: var(--app-surface-elevated);
   color: var(--app-color-text-muted);
   display: inline-flex;
   align-items: center;
@@ -560,7 +575,7 @@ onMounted(() => {
 }
 
 .generate-page__attachment-remove:hover {
-  background: rgba(255, 255, 255, 1);
+  background: var(--app-surface-hover);
   color: var(--app-color-text);
 }
 
@@ -602,8 +617,8 @@ onMounted(() => {
   height: 30px;
   padding: 0 12px;
   border-radius: 999px;
-  border: 1px solid rgba(84, 112, 161, 0.12);
-  background: rgba(247, 250, 255, 0.92);
+  border: 1px solid var(--app-border-default);
+  background: var(--app-surface-soft-alt);
   color: var(--app-color-text-muted);
   display: inline-flex;
   align-items: center;
@@ -613,15 +628,15 @@ onMounted(() => {
 
 .generate-page__config-toggle:hover {
   color: var(--app-color-text);
-  background: rgba(255, 255, 255, 1);
+  background: var(--app-surface-hover);
 }
 
 .generate-page__config-panel {
   margin-top: 10px;
   padding: 12px 14px;
   border-radius: 16px;
-  border: 1px solid rgba(84, 112, 161, 0.1);
-  background: rgba(247, 250, 255, 0.9);
+  border: 1px solid var(--app-border-soft);
+  background: var(--app-surface-soft);
 }
 
 .generate-page__config-item {

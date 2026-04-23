@@ -31,7 +31,7 @@ const router = createRouter({
       meta: { requiresAuth: true },
       children: [
         { path: '', redirect: '/app/dashboard' },
-        { path: 'dashboard', name: 'Dashboard', component: DashboardPage, meta: { navKey: 'dashboard', contentWidth: 'standard' } },
+        { path: 'dashboard', name: 'Dashboard', component: DashboardPage, meta: { navKey: 'dashboard', contentWidth: 'workspace' } },
         { path: 'generate', name: 'Generate', component: GeneratePage, meta: { navKey: 'generate', contentWidth: 'workspace', fullBleed: true } },
         { path: 'memos', name: 'Memos', component: MemosPage, meta: { navKey: 'memos', contentWidth: 'workspace', fullBleed: true } },
         { path: 'history', name: 'History', component: HistoryPage, meta: { navKey: 'history', contentWidth: 'workspace' } },

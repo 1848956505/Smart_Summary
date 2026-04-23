@@ -56,6 +56,7 @@ const getStoredTheme = () => {
 const normalizeThemeClass = (themeValue) => {
   const value = String(themeValue || '').trim()
   if (!value || value === 'light' || value === themeNames.light) return themeNames.light
+  if (value === 'lightClassic' || value === 'light-classic' || value === themeNames.lightClassic) return themeNames.lightClassic
   if (value === 'dark' || value === themeNames.dark) return themeNames.dark
   return value.startsWith('theme-') ? value : themeNames.light
 }
@@ -113,10 +114,9 @@ const themeClass = computed(() => normalizeThemeClass(themeState?.currentTheme?.
   display: flex;
   flex-direction: column;
   overflow: visible;
-  border-radius: var(--app-radius-2xl);
-  background: rgba(255, 255, 255, 0.24);
-  border: 1px solid rgba(84, 112, 161, 0.1);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 @media (max-width: 1200px) {

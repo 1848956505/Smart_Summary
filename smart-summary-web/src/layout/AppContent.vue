@@ -44,11 +44,12 @@ const contentFrameClass = computed(() => [
   flex-direction: column;
   min-height: 0;
   padding-block: var(--app-space-5);
+  padding-inline: var(--app-space-4);
   box-sizing: border-box;
 }
 
 .app-content__frame--full-bleed {
-  padding-inline: var(--app-shell-gutter);
+  padding-inline: calc(var(--app-shell-gutter) + var(--app-space-2));
   max-width: none;
 }
 </style>

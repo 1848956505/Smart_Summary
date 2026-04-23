@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <article class="fragment-card" :class="`status-${fragment.status || 'todo'}`">
     <div class="fragment-card__main">
       <div class="fragment-card__topline">
@@ -167,3 +167,4 @@ const displayDate = computed(() => (props.fragment.workDate || '').slice(0, 10))
   }
 }
 </style>
+

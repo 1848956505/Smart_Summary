@@ -1,12 +1,12 @@
-<template>
+﻿<template>
   <aside :class="['app-sidebar', { 'app-sidebar--collapsed': collapsed }]">
     <div class="app-sidebar__shell">
       <div class="app-sidebar__brand">
         <div class="app-sidebar__mark">S</div>
         <div class="app-sidebar__brand-copy">
-          <p class="app-sidebar__eyebrow">SMART SUMMARY</p>
-          <h2>产品导航</h2>
-          <p>清爽克制的全局侧边栏</p>
+          <p class="app-sidebar__eyebrow">AI WORKSPACE</p>
+          <h2>Smart Summary</h2>
+          <p>记录碎片工作，高效生成总结</p>
         </div>
       </div>
 
@@ -40,7 +40,7 @@
         <div class="app-sidebar__actions">
           <button class="app-sidebar__settings" type="button" @click="$emit('openSettings')">
             <el-icon><Setting /></el-icon>
-            <span>系统偏好</span>
+            <span>系统设置</span>
           </button>
           <button class="app-sidebar__logout" type="button" @click="$emit('logout')">
             <el-icon><SwitchButton /></el-icon>
@@ -71,7 +71,8 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
 .app-sidebar {
   width: var(--app-sidebar-width);
   min-width: var(--app-sidebar-width);
-  height: 100%;
+  margin-top: var(--app-space-5);
+  height: calc(100vh - (var(--app-shell-gutter) * 2) - var(--app-space-5));
   display: flex;
   padding: 0;
   border-radius: var(--app-radius-2xl);
@@ -109,7 +110,7 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
   font-weight: 800;
   letter-spacing: 0.04em;
   background: linear-gradient(135deg, var(--app-color-primary), var(--app-color-primary-strong));
-  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--app-color-primary) 30%, transparent);
   flex-shrink: 0;
 }
 
@@ -175,7 +176,8 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
 }
 
 .app-sidebar__collapse {
-  justify-content: space-between;
+  justify-content: flex-start;
+  margin-top: var(--app-space-2);
   margin-bottom: var(--app-space-3);
   border: 1px solid var(--app-color-border-soft);
   background: var(--app-sidebar-soft-bg);
@@ -219,7 +221,7 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
   width: 32px;
   height: 32px;
   border-radius: 10px;
-  background: linear-gradient(135deg, var(--app-color-primary), #60a5fa);
+  background: var(--app-gradient-primary);
   color: #fff;
   font-weight: 800;
   display: grid;
@@ -291,6 +293,8 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
   .app-sidebar--collapsed {
     width: 100%;
     min-width: 0;
+    margin-top: 0;
+    height: auto;
   }
 
   .app-sidebar__shell {
@@ -298,3 +302,4 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
   }
 }
 </style>
+
