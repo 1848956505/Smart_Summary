@@ -85,10 +85,10 @@ watch(
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid var(--memo-border);
+  background: var(--memo-composer-bg);
+  border: 1px solid var(--memo-composer-border);
   backdrop-filter: blur(16px);
-  box-shadow: var(--memo-shadow-soft);
+  box-shadow: var(--memo-composer-shadow);
 }
 
 .memo-composer:focus-within {

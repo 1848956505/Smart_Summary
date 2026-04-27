@@ -1,11 +1,12 @@
 ﻿<template>
-  <div class="app-scale-shell">
+  <div class="app-scale-shell" :class="themeClass">
     <router-view />
   </div>
 </template>
 
 <script setup>
-import { onMounted, provide, reactive } from 'vue'
+import { computed, onMounted, provide, reactive } from 'vue'
+import { themeNames } from '@/constants/theme'
 
 const currentTheme = reactive({ style: 'light' })
 const userInfo = reactive({ id: null, username: '', token: '' })
@@ -21,6 +22,16 @@ const setTheme = (style) => {
   currentTheme.style = style
   localStorage.setItem('theme', style)
 }
+
+const normalizeThemeClass = (themeValue) => {
+  const value = String(themeValue || '').trim()
+  if (!value || value === 'light' || value === themeNames.light) return themeNames.light
+  if (value === 'lightClassic' || value === 'light-classic' || value === themeNames.lightClassic) return themeNames.lightClassic
+  if (value === 'dark' || value === themeNames.dark) return themeNames.dark
+  return value.startsWith('theme-') ? value : themeNames.light
+}
+
+const themeClass = computed(() => normalizeThemeClass(currentTheme.style))
 
 const logout = () => {
   userInfo.id = null

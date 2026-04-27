@@ -1,6 +1,6 @@
 <template>
   <div class="generate-page app-page-shell">
-    <header class="generate-page__topbar app-surface">
+    <header class="generate-page__topbar app-surface app-surface--hero">
       <div class="generate-page__topbar-copy">
         <p class="generate-page__topbar-kicker">GENERATE</p>
         <h2 class="app-title">智能生成工作台</h2>
@@ -52,7 +52,7 @@
     </section>
 
     <section class="generate-page__composer-shell">
-      <section class="generate-page__composer">
+      <section class="generate-page__composer app-surface app-surface--panel">
         <div v-if="hasAttachment" class="generate-page__attachment">
           <div class="generate-page__attachment-icon">
             <el-icon><Document /></el-icon>
@@ -260,8 +260,6 @@ onMounted(() => {
 .generate-page__topbar,
 .generate-page__composer {
   border-radius: var(--app-radius-2xl);
-  border: 1px solid var(--memo-border);
-  background: var(--app-surface-elevated);
 }
 
 .generate-page__topbar {
@@ -272,7 +270,6 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  box-shadow: var(--app-shadow-soft);
 }
 
 .generate-page__topbar-copy {
@@ -341,6 +338,8 @@ onMounted(() => {
 }
 
 .generate-page__result-shell {
+  width: min(850px, 100%);
+  margin-inline: auto;
   min-height: auto;
 }
 
@@ -365,7 +364,7 @@ onMounted(() => {
 .generate-page__skeleton-line {
   height: 12px;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(230, 238, 248, 0.9), rgba(244, 248, 255, 1), rgba(230, 238, 248, 0.9));
+  background: var(--app-skeleton-base);
   background-size: 200% 100%;
   animation: generate-pulse 1.5s linear infinite;
 }
@@ -456,10 +455,10 @@ onMounted(() => {
   min-width: 100%;
   border-collapse: collapse;
   margin: 14px 0 8px;
-  background: #fff;
+  background: var(--app-markdown-table-bg);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: var(--app-shadow-soft-lg);
+  box-shadow: var(--app-markdown-table-shadow);
 }
 
 .generate-page__result-content :deep(th),
@@ -472,13 +471,13 @@ onMounted(() => {
 }
 
 .generate-page__result-content :deep(th) {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--app-color-primary) 14%, var(--app-surface-elevated-max)), color-mix(in srgb, var(--app-color-primary) 10%, var(--app-surface-elevated)));
+  background: var(--app-markdown-table-head-bg);
   color: var(--app-color-text-strong);
   font-weight: 700;
 }
 
 .generate-page__result-content :deep(tr:nth-child(even) td) {
-  background: color-mix(in srgb, var(--app-surface-soft) 78%, transparent);
+  background: var(--app-markdown-table-even-bg);
 }
 
 .generate-page__empty {
@@ -516,7 +515,6 @@ onMounted(() => {
   width: min(900px, 100%);
   padding: 10px 12px 10px;
   border-radius: 28px;
-  box-shadow: var(--memo-shadow);
 }
 
 .generate-page__attachment {

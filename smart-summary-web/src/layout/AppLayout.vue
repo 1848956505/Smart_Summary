@@ -104,7 +104,7 @@ const themeClass = computed(() => normalizeThemeClass(themeState?.currentTheme?.
   gap: var(--app-space-5);
   padding: var(--app-shell-gutter);
   overflow: visible;
-  background: var(--app-page-bg);
+  background: transparent;
 }
 
 .app-layout__main {

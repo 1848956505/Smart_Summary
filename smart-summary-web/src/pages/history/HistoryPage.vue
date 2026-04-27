@@ -1,6 +1,6 @@
 ﻿<template>
   <div class="history-page app-page-shell">
-    <div class="history-page__toolbar app-surface">
+    <div class="history-page__toolbar app-surface app-surface--hero">
       <div class="history-page__toolbar-copy">
         <p class="history-page__eyebrow">HISTORY</p>
         <h2 class="app-title">历史阅读台</h2>
@@ -29,7 +29,7 @@
     </div>
 
     <div class="history-page__layout">
-      <section class="history-page__rail app-surface">
+      <section class="history-page__rail app-surface app-surface--panel">
         <div class="history-page__rail-header">
           <div>
             <p class="history-page__section-label">INDEX</p>
@@ -60,9 +60,9 @@
         </div>
       </section>
 
-      <section class="history-page__stage app-surface">
+      <section class="history-page__stage app-surface app-surface--panel">
         <div v-if="currentRecord" class="history-page__stage-shell">
-          <div class="history-page__meta-bar">
+          <div class="history-page__meta-bar app-surface app-surface--inset">
             <div class="history-page__meta">
               <span :class="['memo-chip', styleChipClass(currentRecord.style)]">{{ styleLabel(currentRecord.style) }}</span>
               <span class="memo-chip memo-chip--content">{{ currentRecord.modelId || '默认模型' }}</span>
@@ -77,7 +77,7 @@
           </div>
 
           <div class="history-page__document scroll-area">
-            <section class="history-page__block">
+            <section class="history-page__block app-surface app-surface--inset">
               <div class="history-page__block-head">
                 <p class="history-page__section-label">INPUT</p>
                 <span class="memo-chip memo-chip--soft">原始输入</span>
@@ -85,7 +85,7 @@
               <p class="history-page__plain">{{ currentRecord.originalText }}</p>
             </section>
 
-            <section class="history-page__block history-page__block--report">
+            <section class="history-page__block history-page__block--report app-surface app-surface--inset">
               <div class="history-page__block-head">
                 <p class="history-page__section-label">REPORT</p>
                 <span class="memo-chip memo-chip--accent">生成周报</span>
@@ -215,8 +215,6 @@ onMounted(loadRecords)
 .history-page__toolbar,
 .history-page__rail,
 .history-page__stage {
-  background: rgba(255, 255, 255, 0.84);
-  border: 1px solid var(--memo-border);
   border-radius: var(--app-radius-2xl);
 }
 
@@ -226,7 +224,6 @@ onMounted(loadRecords)
   align-items: center;
   justify-content: space-between;
   gap: 18px;
-  box-shadow: 0 14px 34px rgba(39, 72, 124, 0.06);
 }
 
 .history-page__eyebrow,
@@ -297,7 +294,6 @@ onMounted(loadRecords)
 
 .history-page__rail {
   padding: 14px 14px 12px;
-  box-shadow: var(--app-shadow-soft-xl);
 }
 
 .history-page__rail-header {
@@ -336,7 +332,7 @@ onMounted(loadRecords)
   padding: 8px 11px;
   border-radius: 18px;
   border: 1px solid var(--memo-border);
-  background: rgba(255, 255, 255, 0.94);
+  background: var(--app-list-item-bg);
   text-align: left;
   overflow: hidden;
   transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
@@ -356,7 +352,7 @@ onMounted(loadRecords)
 .history-index--active {
   border-color: var(--memo-border-strong);
   box-shadow: var(--memo-selected-shadow);
-  background: linear-gradient(180deg, rgba(239, 246, 255, 0.94), rgba(232, 241, 255, 0.88));
+  background: var(--app-list-item-active-bg);
   transform: translateY(-1px);
 }
 
@@ -400,7 +396,6 @@ onMounted(loadRecords)
 
 .history-page__stage {
   padding: 14px;
-  box-shadow: 0 14px 34px rgba(39, 72, 124, 0.06);
 }
 
 .history-page__stage-shell {
@@ -420,9 +415,6 @@ onMounted(loadRecords)
   flex-wrap: wrap;
   padding: 10px 14px;
   border-radius: 18px;
-  background: linear-gradient(180deg, var(--app-surface-elevated-max), rgba(246, 250, 255, 0.9));
-  border: 1px solid var(--memo-border);
-  box-shadow: 0 10px 24px rgba(39, 72, 124, 0.05);
 }
 
 .history-page__actions {
@@ -437,8 +429,8 @@ onMounted(loadRecords)
 
 .history-page__danger:hover {
   color: var(--app-color-danger);
-  border-color: rgba(209, 67, 67, 0.18);
-  background: rgba(255, 244, 244, 0.98);
+  border-color: var(--app-danger-soft-border);
+  background: var(--app-danger-soft-bg);
 }
 
 .history-page__document {
@@ -458,9 +450,6 @@ onMounted(loadRecords)
 .history-page__block {
   padding: 18px 20px;
   border-radius: 20px;
-  border: 1px solid var(--memo-border);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), var(--app-surface-soft));
-  box-shadow: 0 10px 24px rgba(39, 72, 124, 0.04);
 }
 
 .history-page__block--report {
@@ -489,8 +478,8 @@ onMounted(loadRecords)
   margin: 0;
   padding: 14px 16px;
   border-radius: 16px;
-  background: rgba(245, 249, 255, 0.72);
-  border: 1px solid rgba(84, 112, 161, 0.08);
+  background: var(--app-markdown-plain-bg);
+  border: 1px solid var(--app-markdown-plain-border);
 }
 
 .history-page__report {
@@ -531,14 +520,14 @@ onMounted(loadRecords)
   padding: 12px 14px;
   border-left: 3px solid var(--app-accent-border-strong);
   border-radius: 0 14px 14px 0;
-  background: rgba(243, 248, 255, 0.9);
+  background: var(--app-markdown-quote-bg);
   color: var(--app-color-text-soft);
 }
 
 .history-page__report :deep(code) {
   padding: 2px 6px;
   border-radius: 8px;
-  background: rgba(236, 243, 255, 0.96);
+  background: var(--app-markdown-code-bg);
   color: var(--app-color-text-strong);
   font-size: 0.92em;
 }
@@ -547,7 +536,7 @@ onMounted(loadRecords)
   overflow-x: auto;
   padding: 14px 16px;
   border-radius: 16px;
-  background: rgba(245, 249, 255, 0.96);
+  background: var(--app-markdown-pre-bg);
   border: 1px solid var(--app-border-soft);
 }
 
@@ -561,10 +550,10 @@ onMounted(loadRecords)
   min-width: 100%;
   border-collapse: collapse;
   margin: 14px 0 8px;
-  background: #fff;
+  background: var(--app-markdown-table-bg);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 12px 26px rgba(39, 72, 124, 0.06);
+  box-shadow: var(--app-markdown-table-shadow);
 }
 
 .history-page__report :deep(th),
@@ -577,13 +566,13 @@ onMounted(loadRecords)
 }
 
 .history-page__report :deep(th) {
-  background: linear-gradient(180deg, rgba(233, 242, 255, 0.95), rgba(226, 237, 255, 0.88));
+  background: var(--app-markdown-table-head-bg);
   color: var(--app-color-text-strong);
   font-weight: 700;
 }
 
 .history-page__report :deep(tr:nth-child(even) td) {
-  background: rgba(248, 251, 255, 0.72);
+  background: var(--app-markdown-table-even-bg);
 }
 
 .history-page__empty {

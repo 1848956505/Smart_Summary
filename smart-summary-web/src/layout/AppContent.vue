@@ -33,7 +33,7 @@ const contentFrameClass = computed(() => [
   min-height: 0;
   height: 100%;
   overflow: hidden;
-  background: linear-gradient(180deg, rgba(248, 251, 255, 0.7), rgba(239, 245, 253, 0.94));
+  background: transparent;
 }
 
 .app-content__frame {

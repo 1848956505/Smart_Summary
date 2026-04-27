@@ -179,8 +179,13 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
   justify-content: flex-start;
   margin-top: var(--app-space-2);
   margin-bottom: var(--app-space-3);
-  border: 1px solid var(--app-color-border-soft);
-  background: var(--app-sidebar-soft-bg);
+  border: 1px solid var(--app-sidebar-control-border);
+  background: var(--app-sidebar-control-bg);
+}
+
+.app-sidebar__collapse:hover {
+  background: var(--app-sidebar-control-hover-bg);
+  border-color: var(--app-sidebar-control-hover-border);
 }
 
 .app-sidebar__nav {

@@ -1,16 +1,16 @@
-<template>
-  <div class="min-h-screen flex items-center justify-center p-6 font-sans antialiased text-gray-800 bg-[#f0f0f5] relative overflow-hidden">
+﻿<template>
+  <div class="auth-page min-h-screen flex items-center justify-center p-6 font-sans antialiased text-gray-800 relative overflow-hidden">
     <!-- 背景弥散光效 -->
-    <div class="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-blue-500/30 rounded-full mix-blend-multiply filter blur-[150px] pointer-events-none"></div>
-    <div class="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-purple-500/30 rounded-full mix-blend-multiply filter blur-[150px] pointer-events-none"></div>
+    <div class="auth-orb auth-orb--left absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full mix-blend-multiply filter blur-[150px] pointer-events-none"></div>
+    <div class="auth-orb auth-orb--right absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full mix-blend-multiply filter blur-[150px] pointer-events-none"></div>
 
     <!-- 登录卡片容器 -->
-    <div class="flex w-full max-w-[1000px] h-[600px] bg-white/70 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] overflow-hidden border border-white/80 relative z-10">
+    <div class="auth-card flex w-full max-w-[1000px] h-[600px] backdrop-blur-2xl rounded-[2.5rem] overflow-hidden relative z-10">
       
       <!-- 左侧：品牌与视觉展示区 -->
-      <div class="hidden md:flex w-1/2 p-12 flex-col justify-between relative overflow-hidden bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white">
-        <div class="absolute top-[-10%] left-[-10%] w-64 h-64 bg-white/20 rounded-full filter blur-[60px]"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-80 h-80 bg-blue-400/30 rounded-full filter blur-[80px]"></div>
+      <div class="auth-brand-panel hidden md:flex w-1/2 p-12 flex-col justify-between relative overflow-hidden text-white">
+        <div class="auth-brand-glow absolute top-[-10%] left-[-10%] w-64 h-64 rounded-full filter blur-[60px]"></div>
+        <div class="auth-brand-glow absolute bottom-[-10%] right-[-10%] w-80 h-80 rounded-full filter blur-[80px]"></div>
 
         <div class="relative z-10">
           <div class="flex items-center gap-3 mb-8">
@@ -50,7 +50,7 @@
       </div>
 
       <!-- 右侧：交互表单区 -->
-      <div class="w-full md:w-1/2 p-10 sm:p-14 flex flex-col justify-center bg-white/40">
+      <div class="auth-form-panel w-full md:w-1/2 p-10 sm:p-14 flex flex-col justify-center">
         <div class="max-w-sm w-full mx-auto">
           <div class="text-center mb-10">
             <h2 class="text-2xl font-extrabold text-gray-800 mb-2">欢迎回来</h2>
@@ -69,7 +69,7 @@
                   v-model="form.username" 
                   type="text" 
                   placeholder="example@company.com" 
-                  class="w-full bg-white/80 border border-gray-200/80 rounded-2xl pl-11 pr-4 py-3.5 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-400 focus:bg-white shadow-[0_2px_10px_-3px_rgba(0,0,0,0.02)] transition-all"
+                  class="auth-input w-full rounded-2xl pl-11 pr-4 py-3.5 text-sm focus:outline-none transition-all"
                 >
               </div>
             </div>
@@ -85,11 +85,11 @@
                   v-model="form.password" 
                   type="password" 
                   placeholder="••••••••" 
-                  class="w-full bg-white/80 border border-gray-200/80 rounded-2xl pl-11 pr-10 py-3.5 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-400 focus:bg-white shadow-[0_2px_10px_-3px_rgba(0,0,0,0.02)] transition-all"
+                  class="auth-input w-full rounded-2xl pl-11 pr-10 py-3.5 text-sm focus:outline-none transition-all"
                   @keyup.enter="handleLogin"
                 >
                 <div class="absolute inset-y-0 right-0 pr-4 flex items-center">
-                  <a href="#" class="text-[12px] font-bold text-blue-500 hover:text-blue-600 transition">忘记?</a>
+                  <a href="#" class="auth-link text-[12px] font-bold transition">忘记?</a>
                 </div>
               </div>
             </div>
@@ -98,7 +98,7 @@
             <button 
               type="submit" 
               :disabled="loading"
-              class="group relative w-full flex justify-center py-3.5 px-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-[15px] font-bold rounded-2xl shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transform transition hover:-translate-y-0.5 overflow-hidden mt-8 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="auth-cta group relative w-full flex justify-center py-3.5 px-4 text-white text-[15px] font-bold rounded-2xl transform transition hover:-translate-y-0.5 overflow-hidden mt-8 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
               <span class="relative flex items-center gap-2">
@@ -111,7 +111,7 @@
 
           <p class="mt-8 text-center text-[13px] text-gray-500">
             还没有账号？
-            <router-link to="/register" class="font-bold text-blue-600 hover:text-blue-700 transition relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-[2px] after:bottom-0 after:left-0 after:bg-blue-600 after:origin-bottom-right after:transition-transform hover:after:scale-x-100 hover:after:origin-bottom-left">
+            <router-link to="/register" class="auth-link font-bold transition relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-[2px] after:bottom-0 after:left-0 after:origin-bottom-right after:transition-transform hover:after:scale-x-100 hover:after:origin-bottom-left">
               免费注册
             </router-link>
           </p>
@@ -169,6 +169,74 @@ const handleLogin = async () => {
 </script>
 
 <style scoped>
+.auth-page {
+  background: var(--app-page-bg);
+}
+
+.auth-orb--left {
+  background: var(--auth-bg-orb-left);
+}
+
+.auth-orb--right {
+  background: var(--auth-bg-orb-right);
+}
+
+.auth-card {
+  background: var(--auth-panel-bg);
+  border: 1px solid var(--app-panel-border);
+  box-shadow: var(--app-panel-shadow);
+}
+
+.auth-brand-panel {
+  background: var(--auth-brand-gradient);
+}
+
+.auth-brand-glow {
+  background: var(--auth-brand-glow);
+}
+
+.auth-form-panel {
+  background: var(--auth-form-bg);
+}
+
+.auth-input {
+  background: var(--auth-input-bg);
+  border: 1px solid var(--auth-input-border);
+  color: var(--app-color-text);
+  box-shadow: 0 2px 10px -3px rgba(0, 0, 0, 0.02);
+}
+
+.auth-input::placeholder {
+  color: var(--app-color-text-muted);
+}
+
+.auth-input:focus {
+  border-color: var(--app-accent-border-strong);
+  box-shadow: 0 0 0 4px var(--auth-input-ring);
+  background: var(--auth-input-bg-focus);
+}
+
+.auth-cta {
+  background-image: var(--app-gradient-primary);
+  box-shadow: var(--app-shadow-soft-lg);
+}
+
+.auth-cta:hover {
+  background-image: var(--app-gradient-primary-hover);
+}
+
+.auth-link {
+  color: var(--app-color-primary);
+}
+
+.auth-link:hover {
+  color: var(--app-color-primary-strong);
+}
+
+.auth-link::after {
+  background: currentColor;
+}
+
 @keyframes shimmer {
   100% { transform: translateX(100%); }
 }

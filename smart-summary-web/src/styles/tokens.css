@@ -52,11 +52,23 @@
   --app-color-danger: #d14343;
   --app-color-info: #3178c6;
 
+  --app-elevation-none: none;
+  --app-elevation-surface: 0 3px 8px rgba(39, 72, 124, 0.04);
+  --app-elevation-panel: 0 5px 14px rgba(39, 72, 124, 0.06);
+  --app-elevation-floating: 0 8px 20px rgba(39, 72, 124, 0.1);
+  --app-elevation-interactive: 0 6px 16px rgba(39, 72, 124, 0.08);
+  --app-elevation-primary: 0 10px 22px color-mix(in srgb, var(--app-color-primary) 24%, transparent);
+
   --app-page-bg: linear-gradient(180deg, #f8fbff 0%, #eff5fd 100%);
+  --app-content-bg: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--app-surface-elevated-max) 76%, transparent),
+    color-mix(in srgb, var(--app-surface-soft) 82%, transparent)
+  );
   --app-panel-bg: var(--app-color-bg-panel);
   --app-panel-bg-soft: rgba(248, 251, 255, 0.94);
   --app-panel-border: var(--app-color-border-soft);
-  --app-panel-shadow: var(--app-shadow-shell);
+  --app-panel-shadow: var(--app-elevation-panel);
   --app-navbar-bg: rgba(255, 255, 255, 0.88);
   --app-shell-main-bg: rgba(255, 255, 255, 0.24);
   --app-shell-main-border: rgba(84, 112, 161, 0.1);
@@ -64,12 +76,55 @@
   --app-sidebar-soft-bg: rgba(255, 255, 255, 0.74);
   --app-sidebar-hover-bg: rgba(59, 130, 246, 0.08);
   --app-sidebar-active-bg: rgba(59, 130, 246, 0.1);
+  --app-sidebar-control-bg: var(--app-sidebar-soft-bg);
+  --app-sidebar-control-border: var(--app-color-border-soft);
+  --app-sidebar-control-hover-bg: var(--app-sidebar-hover-bg);
+  --app-sidebar-control-hover-border: var(--app-accent-border);
   --app-surface-elevated: rgba(255, 255, 255, 0.86);
   --app-surface-elevated-strong: rgba(255, 255, 255, 0.92);
   --app-surface-elevated-max: rgba(255, 255, 255, 0.96);
   --app-surface-hover: rgba(255, 255, 255, 0.98);
   --app-surface-soft: rgba(248, 251, 255, 0.9);
   --app-surface-soft-alt: rgba(247, 250, 255, 0.92);
+  --app-surface-hero-bg: rgba(255, 255, 255, 0.84);
+  --app-surface-hero-border: var(--memo-border);
+  --app-surface-hero-shadow: var(--app-elevation-surface);
+  --app-surface-panel-bg: var(--app-surface-elevated);
+  --app-surface-panel-border: var(--memo-border);
+  --app-surface-panel-shadow: var(--app-elevation-surface);
+  --app-surface-inset-bg: linear-gradient(180deg, var(--app-surface-elevated-max), var(--app-surface-soft));
+  --app-surface-inset-border: var(--memo-border);
+  --app-surface-inset-shadow: var(--app-elevation-none);
+  --app-surface-subtle-bg: var(--app-surface-soft);
+  --app-surface-subtle-border: var(--app-border-soft);
+  --app-surface-subtle-shadow: none;
+  --app-skeleton-base: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--app-surface-soft) 78%, transparent),
+    color-mix(in srgb, var(--app-surface-elevated-max) 92%, transparent),
+    color-mix(in srgb, var(--app-surface-soft) 78%, transparent)
+  );
+  --app-list-item-bg: var(--app-surface-elevated-max);
+  --app-list-item-active-bg: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--app-color-primary) 10%, var(--app-surface-elevated-max)),
+    color-mix(in srgb, var(--app-color-primary) 6%, var(--app-surface-soft))
+  );
+  --app-danger-soft-bg: color-mix(in srgb, var(--app-color-danger) 8%, var(--app-surface-elevated-max));
+  --app-danger-soft-border: color-mix(in srgb, var(--app-color-danger) 24%, transparent);
+  --app-markdown-plain-bg: color-mix(in srgb, var(--app-surface-soft) 84%, transparent);
+  --app-markdown-plain-border: var(--app-border-soft);
+  --app-markdown-quote-bg: color-mix(in srgb, var(--app-surface-soft) 88%, transparent);
+  --app-markdown-code-bg: color-mix(in srgb, var(--app-surface-soft) 84%, var(--app-surface-elevated-max));
+  --app-markdown-pre-bg: color-mix(in srgb, var(--app-surface-soft) 92%, var(--app-surface-elevated-max));
+  --app-markdown-table-bg: var(--app-surface-elevated-max);
+  --app-markdown-table-shadow: var(--app-shadow-soft-lg);
+  --app-markdown-table-head-bg: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--app-color-primary) 12%, var(--app-surface-elevated-max)),
+    color-mix(in srgb, var(--app-color-primary) 8%, var(--app-surface-elevated))
+  );
+  --app-markdown-table-even-bg: color-mix(in srgb, var(--app-surface-soft) 78%, transparent);
   --app-border-soft: rgba(84, 112, 161, 0.1);
   --app-border-default: rgba(84, 112, 161, 0.12);
   --app-border-strong: rgba(84, 112, 161, 0.14);
@@ -77,9 +132,21 @@
   --app-accent-soft-strong: rgba(59, 130, 246, 0.12);
   --app-accent-border: rgba(59, 130, 246, 0.2);
   --app-accent-border-strong: rgba(59, 130, 246, 0.28);
-  --app-shadow-soft: 0 8px 20px rgba(39, 72, 124, 0.04);
-  --app-shadow-soft-lg: 0 10px 24px rgba(39, 72, 124, 0.06);
-  --app-shadow-soft-xl: 0 12px 28px rgba(39, 72, 124, 0.05);
+  --app-shadow-soft: var(--app-elevation-interactive);
+  --app-shadow-soft-lg: var(--app-elevation-floating);
+  --app-shadow-soft-xl: 0 10px 24px rgba(39, 72, 124, 0.12);
+  --app-glass-blur: 14px;
+  --app-glass-saturate: 130%;
+  --auth-bg-orb-left: rgba(59, 130, 246, 0.3);
+  --auth-bg-orb-right: rgba(129, 140, 248, 0.3);
+  --auth-brand-gradient: linear-gradient(135deg, #2563eb, #4f46e5 58%, #7c3aed);
+  --auth-brand-glow: rgba(255, 255, 255, 0.2);
+  --auth-panel-bg: rgba(255, 255, 255, 0.72);
+  --auth-form-bg: rgba(255, 255, 255, 0.4);
+  --auth-input-bg: rgba(255, 255, 255, 0.8);
+  --auth-input-bg-focus: rgba(255, 255, 255, 0.96);
+  --auth-input-border: rgba(203, 213, 225, 0.8);
+  --auth-input-ring: rgba(79, 70, 229, 0.14);
 
   --memo-rail-width: calc(252px * var(--app-scale));
   --memo-rail-collapsed-width: calc(76px * var(--app-scale));
@@ -88,14 +155,20 @@
   --memo-surface-muted: rgba(255, 255, 255, 0.82);
   --memo-border: rgba(84, 112, 161, 0.12);
   --memo-border-strong: rgba(59, 130, 246, 0.22);
+  --memo-filter-bg: var(--app-surface-panel-bg);
+  --memo-filter-border: var(--app-surface-panel-border);
+  --memo-filter-shadow: var(--app-elevation-surface);
+  --memo-composer-bg: var(--app-surface-panel-bg);
+  --memo-composer-border: var(--app-surface-panel-border);
+  --memo-composer-shadow: var(--app-elevation-surface);
   --memo-accent-bg: rgba(232, 241, 255, 0.92);
   --memo-accent-bg-strong: rgba(59, 130, 246, 0.12);
   --memo-line: rgba(96, 134, 196, 0.24);
   --memo-line-soft: rgba(84, 112, 161, 0.16);
-  --memo-shadow: 0 18px 42px rgba(39, 72, 124, 0.08);
-  --memo-shadow-soft: 0 10px 24px rgba(39, 72, 124, 0.06);
-  --memo-shadow-strong: 0 16px 34px rgba(39, 72, 124, 0.1);
-  --memo-selected-shadow: 0 0 0 1px rgba(59, 130, 246, 0.08), 0 14px 30px rgba(39, 72, 124, 0.08);
+  --memo-shadow: var(--app-elevation-panel);
+  --memo-shadow-soft: var(--app-elevation-surface);
+  --memo-shadow-strong: var(--app-elevation-floating);
+  --memo-selected-shadow: 0 0 0 1px rgba(59, 130, 246, 0.08), var(--app-elevation-surface);
   --memo-chip-height: calc(24px * var(--app-scale));
   --memo-chip-padding: 0 calc(10px * var(--app-scale));
   --memo-chip-radius: 999px;
@@ -125,7 +198,7 @@
   --memo-button-primary-bg: linear-gradient(135deg, var(--app-color-primary), var(--app-color-primary-strong));
   --memo-button-primary-border: rgba(37, 99, 235, 0.2);
   --memo-button-primary-text: #ffffff;
-  --memo-button-primary-shadow: 0 10px 24px rgba(59, 130, 246, 0.2);
+  --memo-button-primary-shadow: var(--app-elevation-primary);
 
   --app-radius-sm: calc(10px * var(--app-scale));
   --app-radius-md: calc(14px * var(--app-scale));

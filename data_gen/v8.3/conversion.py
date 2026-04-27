@@ -57,8 +57,8 @@ def merge_and_shuffle_datasets(input_dir, output_file, fields_to_keep=None):
 
 
 if __name__ == '__main__':
-    INPUT_FOLDER = 'generated_data_v8_2'
-    OUTPUT_JSON = 'train_data_v8.2.json'
+    INPUT_FOLDER = 'generated_data_v8_3'
+    OUTPUT_JSON = 'train_data_v8.3.json'
 
     # 设为 ['instruction', 'input', 'output'] 可只导出这三个字段；
     # 设为 None 可保留全部字段。

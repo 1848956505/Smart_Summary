@@ -6,6 +6,7 @@
 
 :root,
 .theme-light,
+.theme-light-classic,
 .theme-dark {
   --el-color-primary: var(--app-color-primary);
   --el-color-primary-light-3: color-mix(in srgb, var(--app-color-primary) 75%, white);

@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="dashboard-page app-page-shell">
     <div class="dashboard-page__scroll scroll-area">
-      <section class="dashboard-page__hero app-surface">
+      <section class="dashboard-page__hero app-surface app-surface--hero">
         <div class="dashboard-page__hero-body">
           <div class="dashboard-page__hero-copy">
             <p class="dashboard-page__eyebrow">WORKSPACE</p>
@@ -29,7 +29,7 @@
           </template>
           <p class="dashboard-page__card-desc">{{ action.description }}</p>
           <div class="dashboard-page__card-footer">
-            <AppButton type="primary" text @click="go(action.path)">进入</AppButton>
+            <AppButton variant="link" @click="go(action.path)">进入</AppButton>
           </div>
         </AppCard>
       </section>
@@ -219,6 +219,7 @@ onMounted(async () => {
   height: calc(100vh - (var(--app-shell-gutter) * 2) - (var(--app-space-5) * 2) - 2px);
   min-width: 0;
   overflow: hidden;
+  background: transparent;
 }
 
 .dashboard-page__scroll {
@@ -232,6 +233,7 @@ onMounted(async () => {
   overflow-x: hidden;
   padding: var(--app-space-4);
   padding-right: calc(var(--app-space-4) + 4px);
+  background: transparent;
 }
 
 .dashboard-page__scroll > * {
@@ -241,9 +243,6 @@ onMounted(async () => {
 
 .dashboard-page__hero {
   border-radius: var(--app-radius-2xl);
-  border: 1px solid var(--memo-border);
-  background: rgba(255, 255, 255, 0.84);
-  box-shadow: 0 14px 34px rgba(39, 72, 124, 0.06);
 }
 
 .dashboard-page__hero-body {

@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="settings-page app-page-shell">
     <div class="settings-page__shell">
-      <aside class="settings-page__nav app-surface">
+      <aside class="settings-page__nav app-surface app-surface--panel">
         <div class="settings-page__nav-head">
           <p class="settings-page__eyebrow">SETTINGS</p>
           <h2 class="app-title">系统设置</h2>
@@ -27,7 +27,7 @@
       </aside>
 
       <section class="settings-page__workspace">
-        <header class="settings-page__context app-surface">
+        <header class="settings-page__context app-surface app-surface--hero">
           <div class="settings-page__context-copy">
             <p class="settings-page__context-label">{{ activeTabConfig.eyebrow }}</p>
             <h3 class="app-title">{{ activeTabConfig.title }}</h3>
@@ -41,7 +41,7 @@
           </div>
         </header>
 
-        <section class="settings-page__panel app-surface">
+        <section class="settings-page__panel app-surface app-surface--panel">
           <div class="settings-page__body scroll-area">
             <section v-if="activeTab === 'info'" class="settings-page__section">
               <div class="settings-page__grid">
@@ -107,7 +107,7 @@
           </div>
         </section>
 
-        <footer class="settings-page__footer app-surface">
+        <footer class="settings-page__footer app-surface app-surface--panel">
           <div class="settings-page__footer-actions">
             <AppButton @click="handleClose">取消</AppButton>
             <AppButton type="primary" :loading="saving" @click="handleSave">保存设置</AppButton>
@@ -173,6 +173,11 @@ const themeOptions = [
     label: '紫色玻璃',
     value: themeNames.light,
     preview: 'linear-gradient(90deg, #4f46e5, #a855f7)'
+  },
+  {
+    label: '暗夜金属',
+    value: themeNames.dark,
+    preview: 'linear-gradient(90deg, #0b1220, #0ea5e9)'
   }
 ]
 
@@ -180,6 +185,7 @@ const selectedThemeKey = computed(() => {
   const value = themeState?.currentTheme?.style || localStorage.getItem('theme') || themeNames.light
   if (value === 'lightClassic' || value === 'light-classic') return themeNames.lightClassic
   if (value === 'light' || value === themeNames.light) return themeNames.light
+  if (value === 'dark' || value === themeNames.dark) return themeNames.dark
   return value
 })
 
@@ -277,12 +283,19 @@ const handleThemeChange = (themeValue) => {
   } else {
     localStorage.setItem('theme', themeValue)
   }
-  ElMessage.success(`已切换为${themeValue === themeNames.lightClassic ? '经典蓝' : '紫色玻璃'}主题`)
+  const themeLabel = themeValue === themeNames.lightClassic
+    ? '经典蓝'
+    : themeValue === themeNames.dark
+      ? '暗夜金属'
+      : '紫色玻璃'
+  ElMessage.success(`已切换为${themeLabel}主题`)
 }
 </script>
 
 <style scoped>
 .settings-page {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   min-height: calc(100vh - (var(--app-shell-gutter) * 2) - (var(--app-space-5) * 2) - 2px);
   height: calc(100vh - (var(--app-shell-gutter) * 2) - (var(--app-space-5) * 2) - 2px);
@@ -290,10 +303,13 @@ const handleThemeChange = (themeValue) => {
 }
 
 .settings-page__shell {
-  height: 100%;
+  flex: 1 1 0;
+  min-height: 0;
+  height: 0;
   display: grid;
   grid-template-columns: minmax(196px, 236px) minmax(0, 1fr);
   gap: var(--app-space-4);
+  overflow: hidden;
 }
 
 .settings-page__nav,
@@ -301,8 +317,6 @@ const handleThemeChange = (themeValue) => {
 .settings-page__panel,
 .settings-page__footer {
   border-radius: var(--app-radius-xl);
-  border: 1px solid var(--app-border-soft);
-  background: rgba(255, 255, 255, 0.82);
 }
 
 .settings-page__nav {
@@ -372,10 +386,13 @@ const handleThemeChange = (themeValue) => {
 }
 
 .settings-page__workspace {
+  flex: 1 1 0;
   min-height: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: var(--app-space-4);
+  overflow: hidden;
 }
 
 .settings-page__context {
@@ -384,7 +401,6 @@ const handleThemeChange = (themeValue) => {
   align-items: center;
   justify-content: space-between;
   gap: var(--app-space-4);
-  box-shadow: 0 6px 14px rgba(39, 72, 124, 0.026);
 }
 
 .settings-page__context-copy {
@@ -411,16 +427,21 @@ const handleThemeChange = (themeValue) => {
 }
 
 .settings-page__panel {
-  flex: 1;
+  flex: 1 1 0;
   min-height: 0;
+  height: 0;
   display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
 .settings-page__body {
   width: 100%;
+  flex: 1 1 0;
   min-height: 0;
-  overflow: auto;
+  height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: var(--app-space-5);
 }
 
@@ -558,8 +579,19 @@ const handleThemeChange = (themeValue) => {
 }
 
 @media (max-width: 1140px) {
+  .settings-page {
+    overflow: auto;
+    height: auto;
+    min-height: calc(100vh - (var(--app-shell-gutter) * 2) - (var(--app-space-5) * 2) - 2px);
+  }
+
   .settings-page__shell {
+    height: auto;
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .settings-page__workspace {
+    height: auto;
   }
 
   .settings-page__nav {

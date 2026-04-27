@@ -128,7 +128,7 @@ defineEmits(['generate', 'save', 'copy', 'export-markdown', 'export-pdf', 'archi
 
 .week-header__meta-item:hover {
   border-color: var(--memo-border-strong);
-  box-shadow: 0 8px 18px rgba(39, 72, 124, 0.06);
+  box-shadow: var(--app-elevation-surface);
 }
 
 .week-header__meta-item b {

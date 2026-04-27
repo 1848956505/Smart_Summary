@@ -1,5 +1,5 @@
 ﻿# ================================================================= #
-#  SmartSummary-Pro 数据合成管线配置文件 V8.2 
+#  SmartSummary-Pro 数据合成管线配置文件 V8.3 
 #  核心逻辑：多任务组合、随机时间轴、琐事注入、多风格受控生成
 # ================================================================= #
 
@@ -35,8 +35,8 @@ INCOMPLETE_INFO_PROB = 0.40 # 信息不完整 (Incomplete Info) 的概率 (40%)
 
 # --- 5. 文件路径配置 ---
 SEED_FILE = "task_seeds.json"
-OUTPUT_DIR = "generated_data_v8_2"           # 输出目录
-OUTPUT_FILE_PATTERN = "dataset_{style}_v8.2.jsonl"  # 输出文件命名模式
+OUTPUT_DIR = "generated_data_v8_3"           # 输出目录
+OUTPUT_FILE_PATTERN = "dataset_{style}_v8.3.jsonl"  # 输出文件命名模式
 
 # --- 6. 风格生成配置 ---
 # 可改为 ['from'] 仅生成表格风格，或 ['list'] 仅生成列表风格
@@ -121,4 +121,4 @@ INSTRUCTION_POOL = [
 ]
 
 # --- 12. Prompt Imports (split from config) ---
-from prompts_v8_2 import FROM_PROMPT, LIST_PROMPT
+from prompts_v8_3 import FROM_PROMPT, LIST_PROMPT

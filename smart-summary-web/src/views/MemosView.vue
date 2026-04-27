@@ -264,9 +264,9 @@ const {
   align-items: center;
   padding: 8px 10px;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid var(--memo-border);
-  box-shadow: var(--app-shadow-soft);
+  background: var(--memo-filter-bg);
+  border: 1px solid var(--memo-filter-border);
+  box-shadow: var(--memo-filter-shadow);
 }
 
 .memo-workspace__filters-label {

@@ -1,20 +1,62 @@
-﻿.app-panel-shell,
+.app-panel-shell,
 .app-card,
 .app-surface {
   background: var(--app-panel-bg);
   border: 1px solid var(--app-panel-border);
   border-radius: var(--app-radius-xl);
+  backdrop-filter: blur(var(--app-glass-blur)) saturate(var(--app-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--app-glass-blur)) saturate(var(--app-glass-saturate));
 }
 
 .app-card {
-  box-shadow: var(--app-panel-shadow);
+  box-shadow: var(--app-elevation-panel);
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
 
 .app-surface {
-  box-shadow: var(--app-shadow-panel-soft);
+  box-shadow: var(--app-elevation-surface);
+}
+
+.app-surface--hero {
+  background: var(--app-surface-hero-bg);
+  border-color: var(--app-surface-hero-border);
+  box-shadow: var(--app-surface-hero-shadow);
+}
+
+.app-surface--panel {
+  background: var(--app-surface-panel-bg);
+  border-color: var(--app-surface-panel-border);
+  box-shadow: var(--app-surface-panel-shadow);
+}
+
+.app-surface--inset {
+  background: var(--app-surface-inset-bg);
+  border-color: var(--app-surface-inset-border);
+  box-shadow: var(--app-surface-inset-shadow);
+}
+
+.app-surface--subtle {
+  background: var(--app-surface-subtle-bg);
+  border-color: var(--app-surface-subtle-border);
+  box-shadow: var(--app-surface-subtle-shadow);
+}
+
+.app-card--flat {
+  box-shadow: var(--app-elevation-none);
+}
+
+.app-card--raised {
+  box-shadow: var(--app-elevation-floating);
+}
+
+.app-surface--flat {
+  box-shadow: var(--app-elevation-none);
+}
+
+.app-surface--raised {
+  box-shadow: var(--app-elevation-floating);
 }
 
 .app-card__header {
@@ -263,3 +305,4 @@
   padding: 7px 10px;
   font-size: 12px;
 }
+
