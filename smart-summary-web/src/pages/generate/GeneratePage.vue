@@ -324,7 +324,7 @@ onMounted(() => {
   min-height: 0;
   height: 0;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   scrollbar-gutter: stable;
   padding: 8px 8px 0;
 }
@@ -340,6 +340,8 @@ onMounted(() => {
 .generate-page__result-shell {
   width: min(850px, 100%);
   margin-inline: auto;
+  position: relative;
+  left: -12px;
   min-height: auto;
 }
 
@@ -676,6 +678,10 @@ onMounted(() => {
 
   .generate-page__composer {
     width: 100%;
+  }
+
+  .generate-page__result-shell {
+    left: 0;
   }
 }
 </style>

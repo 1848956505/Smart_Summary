@@ -1,0 +1,14 @@
+{
+  "count": 20,
+  "style_counts": {
+    "列表风格": 10,
+    "表格风格": 10
+  },
+  "qc_passed_count": 20,
+  "qc_passed_rate": 1.0,
+  "avg_input_len": 210.7,
+  "avg_output_len": 924.45,
+  "issue_counter": {
+    "output 含模板套话": 1
+  }
+}

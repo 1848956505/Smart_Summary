@@ -1,0 +1,48 @@
+{
+  "prompt_version": "v8.3.2",
+  "merge_policy": "clean_only_qc_passed_samples",
+  "total_candidates": 2000,
+  "clean_count": 1998,
+  "rejected_count": 2,
+  "clean_rate": 0.999,
+  "clean_summary": {
+    "count": 1998,
+    "style_counts": {
+      "表格风格": 998,
+      "列表风格": 1000
+    },
+    "two_stage_count": 1998,
+    "two_stage_rate": 1.0,
+    "qc_passed_count": 1998,
+    "qc_passed_rate": 1.0,
+    "avg_input_len": 198.62,
+    "avg_output_len": 785.34,
+    "issue_counter": {},
+    "cleaning_counter": {
+      "simplified_empty_next_plan_section": 318,
+      "removed_empty_supplement_section": 179
+    }
+  },
+  "rejected_summary": {
+    "count": 2,
+    "style_counts": {
+      "表格风格": 2
+    },
+    "two_stage_count": 2,
+    "two_stage_rate": 1.0,
+    "qc_passed_count": 0,
+    "qc_passed_rate": 0.0,
+    "avg_input_len": 225.5,
+    "avg_output_len": 968.0,
+    "issue_counter": {
+      "output 含模板套话": 1,
+      "output 出现 input 未提供的关键数值": 1,
+      "output 含禁用包装/结语词": 1
+    },
+    "cleaning_counter": {}
+  },
+  "rejected_sample_ids": [
+    "v8.3.2::from::304",
+    "v8.3.2::from::991"
+  ]
+}

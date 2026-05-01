@@ -1,6 +1,7 @@
-﻿import json
+import json
 import os
 import random
+from pathlib import Path
 
 
 def project_record(record, fields_to_keep=None):
@@ -57,8 +58,9 @@ def merge_and_shuffle_datasets(input_dir, output_file, fields_to_keep=None):
 
 
 if __name__ == '__main__':
-    INPUT_FOLDER = 'generated_data_v8_3'
-    OUTPUT_JSON = 'train_data_v8.3.json'
+    BASE_DIR = Path(__file__).resolve().parent
+    INPUT_FOLDER = str(BASE_DIR / 'generated_data_v8_3')
+    OUTPUT_JSON = str(BASE_DIR / 'train_data_v8.3.json')
 
     # 设为 ['instruction', 'input', 'output'] 可只导出这三个字段；
     # 设为 None 可保留全部字段。

@@ -7,7 +7,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from openai import OpenAI
 from tqdm import tqdm
 
-import configv8_3 as config
+import configv8_3_1 as config
 
 
 random.seed(config.RANDOM_SEED)
