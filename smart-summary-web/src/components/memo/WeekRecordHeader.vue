@@ -28,7 +28,7 @@
         <el-icon><MagicStick /></el-icon>
         一键生成周报
       </el-button>
-      <el-dropdown trigger="click">
+      <AppDropdown trigger="click">
         <el-button size="small" class="memo-button memo-button--ghost week-header__more">
           <el-icon><MoreFilled /></el-icon>
           更多
@@ -42,13 +42,14 @@
             <el-dropdown-item @click="$emit('archive')"><el-icon><Finished /></el-icon>归档</el-dropdown-item>
           </el-dropdown-menu>
         </template>
-      </el-dropdown>
+      </AppDropdown>
     </div>
   </section>
 </template>
 
 <script setup>
 import { MagicStick, FolderOpened, CopyDocument, Document, Printer, Finished, Grid, MoreFilled } from '@element-plus/icons-vue'
+import AppDropdown from '@/components/ui/AppDropdown.vue'
 
 defineProps({
   currentWeek: { type: Object, default: null },
@@ -90,7 +91,7 @@ defineEmits(['generate', 'save', 'copy', 'export-markdown', 'export-pdf', 'archi
 }
 
 .week-header__status-chip {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--app-surface-elevated-max) 72%, transparent);
 }
 
 .week-header__identity h2 {

@@ -72,8 +72,8 @@
   --app-navbar-bg: rgba(255, 255, 255, 0.88);
   --app-shell-main-bg: rgba(255, 255, 255, 0.24);
   --app-shell-main-border: rgba(84, 112, 161, 0.1);
-  --app-sidebar-bg: rgba(255, 255, 255, 0.78);
-  --app-sidebar-soft-bg: rgba(255, 255, 255, 0.74);
+  --app-sidebar-bg: var(--app-surface-panel-bg);
+  --app-sidebar-soft-bg: var(--app-surface-elevated-strong);
   --app-sidebar-hover-bg: rgba(59, 130, 246, 0.08);
   --app-sidebar-active-bg: rgba(59, 130, 246, 0.1);
   --app-sidebar-control-bg: var(--app-sidebar-soft-bg);
@@ -98,6 +98,15 @@
   --app-surface-subtle-bg: var(--app-surface-soft);
   --app-surface-subtle-border: var(--app-border-soft);
   --app-surface-subtle-shadow: none;
+  --app-overlay-bg: var(--app-surface-elevated-max);
+  --app-overlay-border: var(--app-border-default);
+  --app-overlay-shadow: var(--app-shadow-soft-lg);
+  --app-overlay-text: var(--app-color-text);
+  --app-overlay-text-muted: var(--app-color-text-muted);
+  --app-overlay-hover-bg: var(--app-surface-hover);
+  --app-overlay-active-bg: var(--app-accent-soft);
+  --app-overlay-active-text: var(--app-color-primary-strong);
+  --app-overlay-divider: var(--app-border-soft);
   --app-skeleton-base: linear-gradient(
     90deg,
     color-mix(in srgb, var(--app-surface-soft) 78%, transparent),
@@ -150,9 +159,9 @@
 
   --memo-rail-width: calc(252px * var(--app-scale));
   --memo-rail-collapsed-width: calc(76px * var(--app-scale));
-  --memo-surface-strong: rgba(255, 255, 255, 0.96);
-  --memo-surface-soft: rgba(248, 251, 255, 0.94);
-  --memo-surface-muted: rgba(255, 255, 255, 0.82);
+  --memo-surface-strong: var(--app-surface-panel-bg);
+  --memo-surface-soft: var(--app-surface-elevated-strong);
+  --memo-surface-muted: var(--app-surface-elevated);
   --memo-border: rgba(84, 112, 161, 0.12);
   --memo-border-strong: rgba(59, 130, 246, 0.22);
   --memo-filter-bg: var(--app-surface-panel-bg);

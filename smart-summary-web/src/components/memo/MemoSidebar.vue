@@ -53,7 +53,7 @@
             >
               <el-icon><Plus /></el-icon>
             </button>
-            <el-dropdown trigger="click">
+            <AppDropdown trigger="click">
               <button class="memo-button memo-button--ghost memo-button--icon memo-sidebar__more" type="button" title="更多操作" @click.stop>
                 ...
               </button>
@@ -63,7 +63,7 @@
                   <el-dropdown-item @click="$emit('delete-folder', folder)">删除</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
-            </el-dropdown>
+            </AppDropdown>
           </div>
         </div>
 
@@ -86,7 +86,7 @@
               </span>
               <div class="week-meta__bottom">
                 <span class="week-count">{{ weekRecord.fragmentCount || 0 }} 条</span>
-                <el-dropdown trigger="click" @click.stop>
+                <AppDropdown trigger="click" @click.stop>
                   <button class="memo-button memo-button--ghost memo-button--icon memo-sidebar__more" type="button" title="更多操作">
                     ...
                   </button>
@@ -96,7 +96,7 @@
                       <el-dropdown-item @click="$emit('delete-week', weekRecord)">删除周记录</el-dropdown-item>
                     </el-dropdown-menu>
                   </template>
-                </el-dropdown>
+                </AppDropdown>
               </div>
             </div>
           </div>
@@ -104,27 +104,12 @@
       </div>
     </div>
 
-    <div v-else class="memo-sidebar__collapsed-view">
+    <div class="memo-sidebar__footer">
       <button
-        class="memo-button memo-button--ghost memo-button--icon memo-sidebar__collapsed-action"
+        :class="['memo-button', collapsed ? 'memo-button--ghost memo-button--icon' : 'memo-button--ghost', 'memo-sidebar__create-btn']"
         type="button"
-        title="展开目录"
-        @click="$emit('toggle-sidebar')"
-      >
-        <el-icon><CaretRight /></el-icon>
-      </button>
-      <button
-        class="memo-button memo-button--primary memo-button--icon memo-sidebar__collapsed-action"
-        type="button"
-        title="新建文件夹"
         @click="$emit('create-folder')"
       >
-        <el-icon><FolderAdd /></el-icon>
-      </button>
-    </div>
-
-    <div class="memo-sidebar__footer">
-      <button class="memo-button memo-button--ghost memo-sidebar__create-btn" type="button" @click="$emit('create-folder')">
         <el-icon><FolderAdd /></el-icon>
         <span v-if="!collapsed">新建文件夹</span>
       </button>
@@ -134,6 +119,7 @@
 
 <script setup>
 import { CaretRight, CaretLeft, CaretBottom, Plus, FolderAdd } from '@element-plus/icons-vue'
+import AppDropdown from '@/components/ui/AppDropdown.vue'
 
 defineProps({
   folders: { type: Array, default: () => [] },
@@ -196,6 +182,18 @@ const statusLabel = (status) => {
   gap: 12px;
 }
 
+.memo-sidebar--collapsed .memo-sidebar__top {
+  justify-content: flex-end;
+}
+
+.memo-sidebar--collapsed .memo-sidebar__collapse.memo-button--icon {
+  width: 100%;
+  min-width: 0;
+  height: var(--memo-button-height-sm);
+  padding: var(--memo-button-padding);
+  justify-content: center;
+}
+
 .memo-sidebar__brand {
   min-width: 0;
 }
@@ -243,22 +241,9 @@ const statusLabel = (status) => {
   color: var(--app-color-text-muted);
 }
 
-.memo-sidebar__collapsed-view {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 10px;
-  padding-top: 4px;
-}
-
-.memo-sidebar__collapsed-action {
-  width: 100%;
-}
-
 .memo-sidebar__footer {
   margin-top: auto;
-  padding-top: 4px;
+  padding-top: 8px;
 }
 
 .memo-sidebar__create-btn {
@@ -351,7 +336,7 @@ const statusLabel = (status) => {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.94);
+  background: var(--app-surface-elevated-max);
   border: 1px solid var(--memo-border);
   box-shadow: var(--memo-shadow-soft);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, transform 0.2s ease;

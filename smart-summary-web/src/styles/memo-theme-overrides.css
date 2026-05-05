@@ -1,0 +1,87 @@
+/* Memo workspace theme overrides.
+ * Keep visual adaptation separate from feature logic.
+ */
+
+.memo-stats-drawer.el-drawer {
+  background: transparent;
+}
+
+.memo-stats-drawer.el-drawer .el-drawer__body {
+  padding: 12px;
+  background: transparent;
+}
+
+.memo-dialog.el-dialog {
+  background: var(--app-surface-elevated-max);
+  border: 1px solid var(--app-border-default);
+  box-shadow: var(--app-shadow-soft-lg);
+}
+
+.memo-dialog.el-dialog .el-dialog__header {
+  margin-right: 0;
+  padding: 18px 20px 12px;
+  border-bottom: 1px solid var(--app-border-soft);
+}
+
+.memo-dialog.el-dialog .el-dialog__title,
+.memo-dialog.el-dialog .el-dialog__headerbtn .el-dialog__close {
+  color: var(--app-color-text-strong);
+}
+
+.memo-dialog.el-dialog .el-dialog__body {
+  padding: 14px 20px 8px;
+  background: transparent;
+}
+
+.memo-dialog.el-dialog .el-dialog__footer {
+  padding: 12px 20px 18px;
+  border-top: 1px solid var(--app-border-soft);
+  background: transparent;
+}
+
+.memo-dialog .el-form-item__label {
+  color: var(--app-color-text-soft);
+}
+
+.memo-dialog .el-input-number .el-input__wrapper,
+.memo-dialog .el-input__wrapper,
+.memo-dialog .el-select__wrapper,
+.memo-dialog .el-textarea__inner {
+  background: var(--app-surface-elevated-strong);
+  border-color: var(--app-border-default);
+  color: var(--app-color-text);
+  box-shadow: none;
+}
+
+.memo-dialog .el-input__wrapper.is-focus,
+.memo-dialog .el-input-number.is-focus .el-input__wrapper,
+.memo-dialog .el-select__wrapper.is-focused,
+.memo-dialog .el-textarea__inner:focus {
+  border-color: var(--app-accent-border-strong);
+  box-shadow: 0 0 0 3px var(--app-accent-soft);
+}
+
+.memo-dialog .el-input-number__increase,
+.memo-dialog .el-input-number__decrease {
+  background: var(--app-surface-soft-alt);
+  color: var(--app-color-text-muted);
+  border-color: var(--app-border-default);
+  border-left: 1px solid var(--app-border-default);
+}
+
+.memo-dialog .el-input-number__increase:hover,
+.memo-dialog .el-input-number__decrease:hover {
+  color: var(--app-color-text-strong);
+  background: var(--app-surface-hover);
+}
+
+.memo-dialog .el-switch__core {
+  background: var(--app-surface-soft-alt);
+  border-color: var(--app-border-default);
+}
+
+.memo-dialog .el-select__placeholder,
+.memo-dialog .el-select__selected-item,
+.memo-dialog .el-input-number .el-input__inner {
+  color: var(--app-color-text);
+}

@@ -39,7 +39,12 @@
         <div class="memo-workspace__filters app-surface">
           <span class="memo-workspace__filters-label">筛选</span>
 
-          <el-select v-model="filters.status" size="small" class="memo-workspace__select memo-workspace__control">
+          <el-select
+            v-model="filters.status"
+            size="small"
+            popper-class="app-overlay-popper app-select-popper"
+            class="memo-workspace__select memo-workspace__control"
+          >
             <el-option label="全部状态" value="all" />
             <el-option label="待办" value="todo" />
             <el-option label="进行中" value="doing" />
@@ -50,6 +55,7 @@
           <el-select
             v-model="filters.tag"
             size="small"
+            popper-class="app-overlay-popper app-select-popper"
             class="memo-workspace__select memo-workspace__select--wide memo-workspace__control"
           >
             <el-option label="全部标签" value="all" />
@@ -67,6 +73,7 @@
           <el-select
             v-model="activeDate"
             size="small"
+            popper-class="app-overlay-popper app-select-popper"
             class="memo-workspace__select memo-workspace__select--compact memo-workspace__control"
             @change="handleSelectDate"
           >
@@ -148,10 +155,10 @@
 
     <el-drawer
       v-model="statsDrawerVisible"
-      title="本周统计"
       size="420px"
       append-to-body
-      :with-header="true"
+      :with-header="false"
+      class="memo-stats-drawer"
     >
       <WeeklyStatsPanel :fragments="fragments" />
     </el-drawer>

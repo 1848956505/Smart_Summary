@@ -306,3 +306,102 @@
   font-size: 12px;
 }
 
+.app-overlay-popper.el-popper {
+  padding: 0;
+  border-radius: var(--app-radius-lg);
+  background: var(--app-overlay-bg);
+  border: 1px solid var(--app-overlay-border);
+  box-shadow: var(--app-overlay-shadow);
+  backdrop-filter: blur(var(--app-glass-blur)) saturate(var(--app-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--app-glass-blur)) saturate(var(--app-glass-saturate));
+}
+
+.app-select-popper .el-select-dropdown__item,
+.app-dropdown-popper .el-dropdown-menu__item,
+.app-datepicker-popper .el-picker-panel__shortcut {
+  color: var(--app-overlay-text);
+}
+
+.app-select-popper .el-select-dropdown {
+  border: 0;
+  background: transparent;
+}
+
+.app-select-popper .el-select-dropdown__list {
+  padding: 6px;
+}
+
+.app-select-popper .el-select-dropdown__item {
+  margin: 2px 0;
+  border-radius: 10px;
+  color: var(--app-overlay-text);
+}
+
+.app-select-popper .el-select-dropdown__item:hover,
+.app-select-popper .el-select-dropdown__item.hover,
+.app-select-popper .el-select-dropdown__item.is-hovering {
+  background: var(--app-overlay-hover-bg);
+}
+
+.app-select-popper .el-select-dropdown__item.selected,
+.app-select-popper .el-select-dropdown__item.is-selected {
+  background: var(--app-overlay-active-bg);
+  color: var(--app-overlay-active-text);
+}
+
+.app-select-popper .el-select-dropdown__item.is-disabled {
+  color: var(--app-overlay-text-muted);
+}
+
+.app-select-popper .el-select-dropdown__item.is-selected.is-disabled,
+.app-select-popper .el-select-dropdown__item.selected.is-disabled {
+  background: color-mix(in srgb, var(--app-overlay-hover-bg) 84%, transparent);
+  color: var(--app-overlay-text-muted);
+}
+
+.app-dropdown-popper .el-dropdown-menu {
+  margin: 0;
+  padding: 6px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.app-dropdown-popper .el-dropdown-menu__item {
+  margin: 2px 0;
+  border-radius: 10px;
+  line-height: 1.2;
+}
+
+.app-dropdown-popper .el-dropdown-menu__item:not(.is-disabled):hover,
+.app-dropdown-popper .el-dropdown-menu__item:focus,
+.app-dropdown-popper .el-dropdown-menu__item:hover {
+  background: var(--app-overlay-hover-bg);
+  color: var(--app-color-text-strong);
+}
+
+.app-dropdown-popper .el-dropdown-menu__item.is-disabled {
+  color: var(--app-overlay-text-muted);
+}
+
+.app-datepicker-popper .el-picker-panel {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.app-datepicker-popper .el-picker-panel__content,
+.app-datepicker-popper .el-picker-panel__body,
+.app-datepicker-popper .el-date-picker__header,
+.app-datepicker-popper .el-picker-panel__footer {
+  background: transparent;
+}
+
+.app-datepicker-popper .el-picker-panel__shortcut {
+  margin: 2px 6px;
+  border-radius: 10px;
+}
+
+.app-datepicker-popper .el-picker-panel__shortcut:hover {
+  background: var(--app-overlay-hover-bg);
+}

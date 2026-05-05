@@ -139,7 +139,7 @@ const tagRows = computed(() => {
 
 .stats-panel__bar {
   height: 10px;
-  background: #eef2f7;
+  background: color-mix(in srgb, var(--app-surface-soft) 84%, transparent);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -160,7 +160,7 @@ const tagRows = computed(() => {
   min-width: 92px;
   padding: 10px 12px;
   border-radius: 16px;
-  background: #fff;
+  background: var(--app-surface-elevated-max);
   border: 1px solid var(--app-color-border);
   display: flex;
   flex-direction: column;

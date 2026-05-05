@@ -77,11 +77,12 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
   padding: 0;
   border-radius: var(--app-radius-2xl);
   background: var(--app-sidebar-bg);
-  border: 1px solid var(--app-color-border-soft);
-  box-shadow: none;
-  backdrop-filter: blur(18px);
+  border: 1px solid var(--app-surface-panel-border);
+  box-shadow: var(--app-panel-shadow);
+  backdrop-filter: blur(var(--app-glass-blur)) saturate(var(--app-glass-saturate));
   overflow: hidden;
-  transition: width 0.3s ease, min-width 0.3s ease;
+  transition: width 0.25s ease, min-width 0.25s ease;
+  will-change: width, min-width;
 }
 
 .app-sidebar__shell {
@@ -89,6 +90,7 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
   display: flex;
   flex-direction: column;
   padding: 12px;
+  transition: padding 0.25s ease;
 }
 
 .app-sidebar__brand {
@@ -149,7 +151,7 @@ defineEmits(['toggle', 'select', 'logout', 'openSettings'])
   max-width: 190px;
   overflow: hidden;
   white-space: nowrap;
-  transition: opacity 0.24s ease, transform 0.24s ease, max-width 0.3s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease, max-width 0.25s ease;
 }
 
 .app-sidebar__collapse,

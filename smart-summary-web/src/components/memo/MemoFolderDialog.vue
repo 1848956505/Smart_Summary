@@ -23,8 +23,8 @@
 
     <template #footer>
       <div class="memo-dialog__footer">
-        <el-button @click="$emit('update:visible', false)">取消</el-button>
-        <el-button type="primary" :loading="loading" @click="handleSubmit">确定</el-button>
+        <AppButton @click="$emit('update:visible', false)">取消</AppButton>
+        <AppButton type="primary" :loading="loading" @click="handleSubmit">确定</AppButton>
       </div>
     </template>
   </el-dialog>
@@ -32,6 +32,7 @@
 
 <script setup>
 import { computed, reactive, watch } from 'vue'
+import AppButton from '@/components/ui/AppButton.vue'
 
 const props = defineProps({
   visible: {

@@ -9,39 +9,48 @@
   >
     <el-form :model="form" label-position="top" class="memo-dialog__form">
       <el-form-item label="所属文件夹">
-        <el-select v-model="form.folderId" placeholder="请选择文件夹" style="width: 100%">
+        <el-select
+          v-model="form.folderId"
+          placeholder="请选择文件夹"
+          popper-class="app-overlay-popper app-select-popper"
+          class="memo-dialog__control"
+        >
           <el-option v-for="folder in folders" :key="folder.id" :label="folder.name" :value="folder.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="周记录标题">
-        <el-input v-model="form.title" placeholder="请输入周记录标题" />
+        <AppInput v-model="form.title" placeholder="请输入周记录标题" />
       </el-form-item>
       <div class="memo-dialog__grid">
         <el-form-item label="周开始日期">
-          <el-date-picker v-model="form.weekStartDate" value-format="YYYY-MM-DD" type="date" placeholder="选择开始日期" style="width: 100%" />
+          <AppDatePicker v-model="form.weekStartDate" value-format="YYYY-MM-DD" type="date" placeholder="选择开始日期" class="memo-dialog__control" />
         </el-form-item>
         <el-form-item label="周结束日期">
-          <el-date-picker v-model="form.weekEndDate" value-format="YYYY-MM-DD" type="date" placeholder="选择结束日期" style="width: 100%" />
+          <AppDatePicker v-model="form.weekEndDate" value-format="YYYY-MM-DD" type="date" placeholder="选择结束日期" class="memo-dialog__control" />
         </el-form-item>
       </div>
       <div class="memo-dialog__grid">
         <el-form-item label="状态">
-          <el-select v-model="form.status" style="width: 100%">
+          <el-select
+            v-model="form.status"
+            popper-class="app-overlay-popper app-select-popper"
+            class="memo-dialog__control"
+          >
             <el-option label="草稿" value="draft" />
             <el-option label="已生成" value="generated" />
             <el-option label="已归档" value="archived" />
           </el-select>
         </el-form-item>
         <el-form-item label="摘要内容">
-          <el-input v-model="form.summaryContent" placeholder="可选：保存已有周报摘要" />
+          <AppInput v-model="form.summaryContent" placeholder="可选：保存已有周报摘要" />
         </el-form-item>
       </div>
     </el-form>
 
     <template #footer>
       <div class="memo-dialog__footer">
-        <el-button @click="$emit('update:visible', false)">取消</el-button>
-        <el-button type="primary" :loading="loading" @click="handleSubmit">确定</el-button>
+        <AppButton @click="$emit('update:visible', false)">取消</AppButton>
+        <AppButton type="primary" :loading="loading" @click="handleSubmit">确定</AppButton>
       </div>
     </template>
   </el-dialog>
@@ -49,6 +58,9 @@
 
 <script setup>
 import { computed, reactive, watch } from 'vue'
+import AppButton from '@/components/ui/AppButton.vue'
+import AppInput from '@/components/ui/AppInput.vue'
+import AppDatePicker from '@/components/ui/AppDatePicker.vue'
 
 const props = defineProps({
   visible: {
@@ -114,6 +126,9 @@ const handleSubmit = () => {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+}
+.memo-dialog__control {
+  width: 100%;
 }
 .memo-dialog__footer {
   display: flex;

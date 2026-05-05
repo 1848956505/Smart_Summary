@@ -143,8 +143,8 @@ const displayDate = computed(() => (props.fragment.workDate || '').slice(0, 10))
 
 .fragment-card__danger:hover {
   color: var(--app-color-danger);
-  border-color: rgba(209, 67, 67, 0.18);
-  background: rgba(255, 244, 244, 0.98);
+  border-color: var(--app-danger-soft-border);
+  background: var(--app-danger-soft-bg);
 }
 
 @media (max-width: 820px) {

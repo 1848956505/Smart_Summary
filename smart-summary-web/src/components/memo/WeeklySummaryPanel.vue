@@ -8,10 +8,9 @@
       <span class="summary-panel__hint">支持二次编辑后保存</span>
     </div>
 
-    <el-input
+    <AppTextarea
       :model-value="summary"
       @update:model-value="$emit('update:summary', $event)"
-      type="textarea"
       :rows="18"
       resize="none"
       placeholder="点击“一键生成周报”后，这里会出现结构化周报内容"
@@ -21,6 +20,8 @@
 </template>
 
 <script setup>
+import AppTextarea from '@/components/ui/AppTextarea.vue'
+
 defineProps({ summary: { type: String, default: '' } })
 defineEmits(['update:summary'])
 </script>
@@ -65,16 +66,6 @@ defineEmits(['update:summary'])
   color: var(--app-color-primary-strong);
   font-size: 12px;
   font-weight: 700;
-}
-
-.summary-panel__editor :deep(.el-textarea__inner) {
-  border-radius: 18px;
-  border-color: var(--app-color-border);
-  background: var(--app-panel-bg-soft);
-  box-shadow: none;
-  padding: 16px 18px;
-  line-height: 1.7;
-  color: var(--app-color-text);
 }
 
 .summary-panel__editor {

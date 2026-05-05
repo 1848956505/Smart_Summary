@@ -11,21 +11,25 @@
     <el-form :model="form" label-position="top" class="memo-dialog__form">
       <div class="memo-dialog__grid">
         <el-form-item label="工作日期">
-          <el-date-picker v-model="form.workDate" value-format="YYYY-MM-DD" type="date" placeholder="选择日期" style="width: 100%" />
+          <AppDatePicker v-model="form.workDate" value-format="YYYY-MM-DD" type="date" placeholder="选择日期" class="memo-dialog__control" />
         </el-form-item>
         <el-form-item label="排序值">
           <el-input-number v-model="form.sortOrder" :min="0" :step="1" controls-position="right" class="memo-dialog__number" />
         </el-form-item>
       </div>
       <el-form-item label="标题">
-        <el-input v-model="form.title" placeholder="请输入碎片标题" />
+        <AppInput v-model="form.title" placeholder="请输入碎片标题" />
       </el-form-item>
       <el-form-item label="内容">
-        <el-input v-model="form.content" type="textarea" :rows="6" placeholder="填写碎片的具体内容" />
+        <AppTextarea v-model="form.content" :rows="6" placeholder="填写碎片的具体内容" />
       </el-form-item>
       <div class="memo-dialog__grid">
         <el-form-item label="状态">
-          <el-select v-model="form.status" style="width: 100%">
+          <el-select
+            v-model="form.status"
+            popper-class="app-overlay-popper app-select-popper"
+            class="memo-dialog__control"
+          >
             <el-option label="待办" value="todo" />
             <el-option label="进行中" value="doing" />
             <el-option label="已完成" value="done" />
@@ -33,7 +37,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="优先级">
-          <el-select v-model="form.priority" style="width: 100%">
+          <el-select
+            v-model="form.priority"
+            popper-class="app-overlay-popper app-select-popper"
+            class="memo-dialog__control"
+          >
             <el-option label="低" value="low" />
             <el-option label="中" value="medium" />
             <el-option label="高" value="high" />
@@ -41,14 +49,14 @@
         </el-form-item>
       </div>
       <el-form-item label="标签">
-        <el-input v-model="form.tag" placeholder="例如：开发 / 测试 / 会议 / 设计" />
+        <AppInput v-model="form.tag" placeholder="例如：开发 / 测试 / 会议 / 设计" />
       </el-form-item>
     </el-form>
 
     <template #footer>
       <div class="memo-dialog__footer">
-        <el-button @click="$emit('update:visible', false)">取消</el-button>
-        <el-button type="primary" :loading="loading" @click="handleSubmit">确定</el-button>
+        <AppButton @click="$emit('update:visible', false)">取消</AppButton>
+        <AppButton type="primary" :loading="loading" @click="handleSubmit">确定</AppButton>
       </div>
     </template>
   </el-dialog>
@@ -56,6 +64,10 @@
 
 <script setup>
 import { computed, reactive, watch } from 'vue'
+import AppButton from '@/components/ui/AppButton.vue'
+import AppInput from '@/components/ui/AppInput.vue'
+import AppDatePicker from '@/components/ui/AppDatePicker.vue'
+import AppTextarea from '@/components/ui/AppTextarea.vue'
 
 const props = defineProps({
   visible: {
@@ -122,6 +134,9 @@ const handleSubmit = () => {
   gap: 16px;
 }
 .memo-dialog__number {
+  width: 100%;
+}
+.memo-dialog__control {
   width: 100%;
 }
 .memo-dialog__footer {

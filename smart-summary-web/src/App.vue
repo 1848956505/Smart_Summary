@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, provide, reactive } from 'vue'
+import { computed, onBeforeUnmount, onMounted, provide, reactive, watch } from 'vue'
 import { themeNames } from '@/constants/theme'
 
 const currentTheme = reactive({ style: 'light' })
@@ -32,6 +32,13 @@ const normalizeThemeClass = (themeValue) => {
 }
 
 const themeClass = computed(() => normalizeThemeClass(currentTheme.style))
+const themeClasses = [themeNames.light, themeNames.lightClassic, themeNames.dark]
+
+const applyThemeClassToBody = (theme) => {
+  if (typeof document === 'undefined') return
+  document.body.classList.remove(...themeClasses)
+  document.body.classList.add(theme)
+}
 
 const logout = () => {
   userInfo.id = null
@@ -47,6 +54,19 @@ onMounted(() => {
   if (savedTheme) currentTheme.style = savedTheme
 })
 
+watch(
+  themeClass,
+  (theme) => {
+    applyThemeClassToBody(theme)
+  },
+  { immediate: true }
+)
+
+onBeforeUnmount(() => {
+  if (typeof document === 'undefined') return
+  document.body.classList.remove(...themeClasses)
+})
+
 provide('userInfo', { userInfo, setUser, logout })
 provide('theme', { currentTheme, setTheme })
 </script>
@@ -54,6 +74,8 @@ provide('theme', { currentTheme, setTheme })
 <style scoped>
 .app-scale-shell {
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
+  background: var(--app-page-bg);
+  background-attachment: fixed;
 }
 </style>
